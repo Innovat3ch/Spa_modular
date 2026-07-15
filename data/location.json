@@ -1,0 +1,33 @@
+{
+  
+  "layout": "fullscreen",
+   "align": "center",
+  "text_align": "justify",
+
+"service_mode": "presencial",
+
+  "content": {
+    "title": "Nuestra oficina",
+
+    "subtitle": "Escríbenos para diseñar la infraestructura digital de tu negocio.",
+
+    "reference": "referencia de ubicación",
+
+    "hours_label": "Te atendemos en:",
+
+    "hours": "Lun - Vie: 9:00 - 18:00",
+
+    "hours_weekend": "Sáb: 9:00 - 13:00"
+  },
+
+  "media": {
+    "show_photo": true,
+    "show_map": true
+  },
+
+  "visibility": {
+    "address": true,
+    "email": true,
+    "phone": true
+  }
+}

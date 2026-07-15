@@ -1,0 +1,213 @@
+/* ==========================================================================
+   location.css — Módulo de ubicación
+   Contiene: media viewer, info box, toggle foto/mapa
+   Usado por: location.js (standalone) y contact.js (panel derecho)
+   ========================================================================== */
+
+/* ==========================================================================
+   MEDIA VIEWER — altura fija para imagen y mapa iguales
+   ========================================================================== */
+
+.media-viewer-container {
+  position: relative;
+  width: 100%;
+  height: 280px;
+  overflow: hidden;
+  border-radius: 10px;
+  background: color-mix(in srgb, var(--accent) 2%, transparent);
+  box-shadow: 0 3px 10px color-mix(in srgb, var(--ink) 8%, transparent);
+}
+
+/* ==========================================================================
+   VISTAS — foto y mapa: misma posición, misma transición
+   ========================================================================== */
+
+.business-image-view,
+.map-iframe-view {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.business-image-view img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.map-iframe-view iframe {
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+
+/* ==========================================================================
+   TOGGLE — foto visible por defecto, mapa oculto
+   ========================================================================== */
+
+/* Sin clase show-map: foto visible, mapa oculto */
+.media-viewer-container:not(.show-map) .business-image-view {
+  opacity: 1;
+  visibility: visible;
+}
+
+.media-viewer-container:not(.show-map) .map-iframe-view {
+  opacity: 0;
+  visibility: hidden;
+}
+
+/* Con clase show-map: foto oculta, mapa visible */
+.media-viewer-container.show-map .business-image-view {
+  opacity: 0;
+  visibility: hidden;
+}
+
+.media-viewer-container.show-map .map-iframe-view {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* ==========================================================================
+   BOTÓN TOGGLE
+   ========================================================================== */
+
+.toggle-media-btn {
+  position: absolute;
+  bottom: 12px;
+  right: 12px;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  border: 1px solid color-mix(in srgb, var(--accent) 15%, transparent);
+  background: var(--surface);
+  color: var(--text-title);
+  font-family: var(--font-family);
+  font-size: 0.85rem;
+  letter-spacing: 0.03em;
+  box-shadow: 0 4px 10px color-mix(in srgb, var(--ink) 15%, transparent);
+  transition: transform 0.2s ease, background 0.2s ease;
+}
+
+.toggle-media-btn:hover {
+  transform: scale(1.03);
+  background: var(--paper);
+}
+
+/* ==========================================================================
+   INFO BOX — campos de información
+   ========================================================================== */
+
+.extended-info-box {
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+  margin-top: 16px;
+  padding: 12px 4px;
+  background: transparent;
+}
+
+.info-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.8rem;
+  color: var(--text-main);
+  font-family: var(--font-secondary);
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+.info-row strong {
+  display: inline-block;
+  min-width: 110px;
+  color: var(--text-title);
+  font-family: var(--font-family);
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.info-row a {
+  color: var(--accent);
+  text-decoration: none;
+}
+
+.info-row a:hover {
+  text-decoration: underline;
+}
+
+/* Subtitle — texto descriptivo sin label */
+.info-row.info-subtitle {
+  font-size: 1rem;
+  opacity: 0.8;
+  font-style: italic;
+}
+
+/* Nota online — solo hybrid */
+.info-row.info-online-note {
+  margin-top: 0.5rem;
+  padding: 0.6rem 1rem;
+  border-radius: 8px;
+  background: color-mix(in srgb, var(--accent) 6%, transparent);
+  border-left: 3px solid var(--accent);
+  font-size: 0.9rem;
+  color: var(--text-main);
+}
+
+/* ==========================================================================
+   RESPONSIVE
+   ========================================================================== */
+
+@media (max-width: 992px) {
+  .media-viewer-container {
+    height: 220px;
+  }
+
+  .extended-info-box {
+    gap: 0.75rem;
+    padding: 10px 4px;
+  }
+
+  .info-row {
+    flex-direction: column;
+    gap: 0.15rem;
+  }
+
+  .info-row strong {
+    min-width: unset;
+    font-size: 0.8rem;
+  }
+
+  .toggle-media-btn {
+    padding: 0.42rem 0.8rem;
+    font-size: 0.72rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .media-viewer-container {
+    height: 180px;
+    border-radius: 8px;
+  }
+
+  .extended-info-box {
+    gap: 0.65rem;
+    margin-top: 12px;
+    padding: 8px 2px;
+  }
+
+  .info-row {
+    font-size: 0.88rem;
+  }
+
+  .info-row strong {
+    font-size: 0.75rem;
+  }
+}

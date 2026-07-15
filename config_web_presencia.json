@@ -1,0 +1,61 @@
+{
+  "client": {
+    "id": "SI-001",
+    "domain": "presencia.innovatech.ec",
+    "category": "project",
+    "template_id": "pyme/index.html",
+    "umami_id": "",
+    "analytics_url": ""
+  },
+  "business": {
+    "brand_name": "Presencia Digital",
+    "legal_name": "Digital & Escalable",
+    "tax_id": "",
+    "tagline": "Infraestructura digital para PYMEs",
+    "address": "Guayaquil, Ecuador",
+    "city": "Guayaquil",
+    "country": "Ecuador",
+    "google_maps": "",
+    "phone": "",
+    "whatsapp": "593984105985",
+    "email": "jf.quintana66698@gmail.com"
+  },
+  "appearance": {
+    "primary_color": "#c8412a",
+    "secondary_color": "#0d0d0d",
+    "background_color": "#f5f2ec",
+    "text_primary": "#333333",
+    "text_title": "#0d0d0d",
+    "text_light": "#ffffff",
+    "font_family": "Bebas Neue",
+    "font_secondary": "DM Sans",
+    "surface_color": "#ffffff",
+    "logo_path": "/assets/images/logo.png",
+    "favicon_path": "/assets/images/favicon.png",
+    "background_image": "/assets/images/hero.webp",
+    "background_mobile": "/assets/images/hero-mobile.webp",
+    "office_image": "/assets/images/office.jpg"
+  },
+  "navigation": {
+    "hero": { "show": true, "in_menu": false, "label": "" },
+    "home": { "show": false, "in_menu": true, "label": "Inicio" },
+    "about": { "show": true, "in_menu": true, "label": "Nosotros" },
+    "services": { "show": true, "in_menu": true, "label": "Servicios" },
+    "portfolio": { "show": false, "in_menu": true, "label": "Catálogo" },
+    "products": { "show": false, "in_menu": false, "label": "Vitrina" },
+    "booking": { "show": false, "in_menu": false, "label": "Agenda" },
+    "reviews": { "show": false, "in_menu": false, "label": "Opiniones" },
+    "faq": { "show": false, "in_menu": true, "label": "Ayuda" },
+    "location": { "show": true, "in_menu": true, "label": "Ubicación" },
+    "contact": { "show": true, "in_menu": true, "label": "Contacto" },
+    "social": { "show": false, "in_menu": false, "label": "Síguenos" },
+    "footer": { "show": false, "in_menu": false, "label": "Pie de Página" },
+    "search_bar": { "show": false, "in_menu": false, "label": "Buscar" }
+  },
+  "layouts": {
+    "default_layout": "blocks",
+    "default_align": "left",
+    "default_valign": "middle",
+    "default_columns": 2
+  }
+}

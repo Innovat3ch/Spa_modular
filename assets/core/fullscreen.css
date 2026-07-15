@@ -1,0 +1,205 @@
+/* ==========================================================================
+   fullscreen.css — Layout Fullscreen
+   ========================================================================== */
+
+.layout--fullscreen {
+  --fs-item-body-gap: 0.9rem;
+  --fs-item-feature-gap: 0.6rem;
+  --fs-items-gap: 1.8rem;
+  min-height: 100vh;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  position: relative;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+.layout--fullscreen > * {
+  position: relative;
+  z-index: 1;
+}
+
+.layout--fullscreen .layout-content {
+  width: var(--section-content-width);
+}
+
+/* ==========================================================================
+   ALIGN — posicion del bloque (controlado por layout.css universal)
+   ========================================================================== */
+
+/* ==========================================================================
+   FONDO — solo cuando layout.js agrega la clase section-background
+   Cadena: --section-bg-image → --global-bg-image → none
+   El módulo puede sobrescribir definiendo --section-bg-image en .page-section
+   ========================================================================== */
+.layout--fullscreen.section-background {
+  background-color: var(--section-bg-color, transparent);
+  background-image: var(--section-bg-image, var(--global-bg-image, none));
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+@media (max-width: 768px) {
+  .layout--fullscreen.section-background {
+    background-image: var(--section-bg-mobile,
+      var(--global-bg-mobile,
+        var(--section-bg-image,
+          var(--global-bg-image, none))));
+  }
+}
+
+/* ==========================================================================
+   FULLSCREEN ITEMS — Párrafos estructurados
+   ========================================================================== */
+.fs-items {
+  display: grid;
+  grid-template-columns: repeat(var(--columns, 1), minmax(0, 1fr));
+  gap: var(--fs-items-gap);
+  margin: 1rem 0;
+  align-items: start;
+}
+
+.fs-item {
+  display: grid;
+  grid-template-columns: 32px minmax(0, 1fr);
+  column-gap: 0.75rem;
+  row-gap: 0.35rem;
+  align-items: start;
+  margin: 0;
+  line-height: 1.6;
+  text-decoration: none;
+  color: inherit;
+  min-width: 0;
+}
+
+.fs-item--link {
+  cursor: pointer;
+  padding: 0.5rem;
+  margin: -0.5rem;
+  border-radius: 8px;
+  transition: background 0.2s ease;
+}
+
+.fs-item--link:hover {
+  background: rgba(200, 65, 42, 0.06);
+}
+
+.fs-item-icon {
+  width: 32px;
+  height: 32px;
+  object-fit: contain;
+  flex-shrink: 0;
+  opacity: 0.85;
+  margin-top: 0.2rem;
+  grid-column: 1;
+  grid-row: 1;
+}
+
+.fs-item-head {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  min-width: 0;
+  grid-column: 2;
+  grid-row: 1;
+}
+
+.fs-item-body {
+  min-width: 0;
+  grid-column: 1 / -1;
+  display: flex;
+  flex-direction: column;
+  gap: var(--fs-item-body-gap);
+  padding-top: 0.35rem;
+}
+
+.fs-item-title {
+  display: block;
+  font-weight: 700;
+  color: var(--title-color);
+}
+
+.fs-item-summary {
+  display: block;
+  color: var(--layout-text);
+  opacity: 0.8;
+}
+
+.fs-item-desc {
+  display: block;
+  color: var(--layout-text);
+  text-align: justify;
+  line-height: 1.65;
+}
+
+.fs-item-features {
+  display: grid;
+  gap: var(--fs-item-feature-gap);
+  color: var(--layout-text);
+  opacity: 0.85;
+  margin: 0;
+  padding-left: 1.1rem;
+}
+
+/* ==========================================================================
+   RESPONSIVE — mobile
+   ========================================================================== */
+@media (max-width: 768px) {
+  .layout--fullscreen {
+    flex-direction: column !important;
+  }
+
+  .layout--fullscreen .layout-content {
+    padding: calc(var(--nav-height) + var(--section-content-top-gap-mobile)) var(--section-padding) 4rem !important;
+    width: 100% !important;
+    text-align: center !important;
+  }
+
+  .layout--fullscreen {
+    --fs-item-body-gap: 0.75rem;
+    --fs-item-feature-gap: 0.5rem;
+    --fs-items-gap: 1.25rem;
+  }
+
+  .layout--fullscreen .layout-content h1,
+  .layout--fullscreen .layout-content h2,
+  .layout--fullscreen .layout-content h3,
+  .layout--fullscreen .layout-content p {
+    text-align: center !important;
+  }
+
+  .fs-item {
+    grid-template-columns: 28px minmax(0, 1fr);
+    width: 100%;
+    justify-items: start;
+    text-align: left;
+  }
+
+  .fs-items {
+    grid-template-columns: 1fr !important;
+    width: 100%;
+  }
+
+  .fs-item-icon {
+    margin-top: 0;
+    grid-column: 1;
+    grid-row: 1;
+  }
+
+  .fs-item-head {
+    grid-column: 2;
+    grid-row: 1;
+    align-items: flex-start;
+  }
+
+  .fs-item-body {
+    grid-column: 1 / -1;
+    text-align: left;
+  }
+
+  .fs-item-desc {
+    text-align: left;
+  }
+}

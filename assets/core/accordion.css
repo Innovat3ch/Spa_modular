@@ -1,0 +1,243 @@
+/* ==========================================================================
+   accordion.css — Layout Accordion
+   Estilos ESPECIFICOS del layout accordion.
+   El control de align/text_align/valign está en layout.css (universal)
+   ========================================================================== */
+
+.layout--accordion {
+  min-height: 100vh;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  box-sizing: border-box;
+}
+
+.layout--accordion .layout-content {
+  width: var(--section-content-width);
+  box-sizing: border-box;
+}
+
+/* ==========================================================================
+   CONTENEDOR MULTI-COLUMNA
+   ========================================================================== */
+.section-accordion {
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(var(--columns, 1), minmax(0, 1fr));
+  gap: var(--section-gap, 1rem);
+  align-items: start;
+}
+
+.accordion-column {
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+}
+
+/* ==========================================================================
+   ITEM BASE
+   ========================================================================== */
+.accordion-item {
+  position: relative;
+  width: 100%;
+  border: 1px solid var(--layout-border);
+  border-radius: 8px;
+  background: var(--layout-bg);
+  box-shadow: 0 10px 30px rgba(13, 13, 13, 0.06);
+  overflow: hidden;
+}
+
+.accordion-item[open] {
+  border-color: rgba(200, 65, 42, 0.32);
+  box-shadow: 0 14px 38px rgba(13, 13, 13, 0.09);
+}
+
+/* ==========================================================================
+   TOGGLE
+   ========================================================================== */
+.accordion-toggle {
+  position: absolute;
+  top: 0.85rem;
+  right: 0.85rem;
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  color: var(--accent);
+  line-height: 1;
+  pointer-events: none;
+  transition: transform 0.25s ease;
+  z-index: 2;
+}
+
+.accordion-item[open] .accordion-toggle {
+  transform: rotate(45deg);
+}
+
+/* ==========================================================================
+   HEADER (summary)
+   ========================================================================== */
+.accordion-header {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: center;
+  gap: 1rem;
+  padding: 1.1rem 3.5rem 1.1rem 1.25rem;
+  cursor: pointer;
+  list-style: none;
+}
+
+.accordion-header::-webkit-details-marker {
+  display: none;
+}
+
+.accordion-icon {
+  width: 42px;
+  height: 42px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  background: var(--layout-icon-bg);
+  flex: 0 0 auto;
+}
+
+.accordion-icon img {
+  width: 24px;
+  height: 24px;
+  object-fit: contain;
+}
+
+.accordion-title {
+  margin: 0;
+  color: var(--title-color);
+  letter-spacing: var(--tracking-titles);
+}
+
+.accordion-summary {
+  margin: 0.25rem 0 0;
+  color: var(--layout-text);
+  line-height: 1.5;
+}
+
+/* ==========================================================================
+   BODY
+   ========================================================================== */
+.accordion-body {
+  display: flex;
+  gap: 2rem;
+  align-items: stretch;
+  padding: 1rem 1.25rem 1.25rem calc(1.25rem + 42px + 1rem);
+}
+
+.accordion-media {
+  flex: 0 0 35%;
+  order: 2;
+  position: relative;
+  border-radius: 8px;
+  overflow: hidden;
+  background: rgba(13, 13, 13, 0.04);
+  margin: 0;
+}
+
+.accordion-media img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.accordion-content-text {
+  flex: 1;
+  order: 1;
+}
+
+.accordion-description {
+  margin: 0 0 1rem;
+  color: var(--layout-text);
+  line-height: 1.7;
+}
+
+.accordion-features {
+  display: grid;
+  gap: 0.45rem;
+  margin: 0 0 1rem;
+  padding-left: 1.1rem;
+  color: var(--layout-text);
+  line-height: 1.5;
+}
+
+.accordion-features li::marker {
+  color: var(--accent);
+}
+
+.accordion-cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 42px;
+  padding: 0 1rem;
+  border-radius: 8px;
+  background: var(--accent);
+  color: var(--text-light);
+  text-decoration: none;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-wide);
+}
+
+.accordion-cta:hover {
+  filter: brightness(0.95);
+}
+
+/* ==========================================================================
+   RESPONSIVE — mobile (solo lo específico de accordion)
+   ========================================================================== */
+@media (max-width: 768px) {
+  .section-accordion {
+    grid-template-columns: 1fr !important;
+    gap: 0.9rem !important;
+  }
+
+  .accordion-header {
+    grid-template-columns: auto 1fr;
+    gap: 0.75rem;
+    padding: 1rem 3rem 1rem 1rem;
+    text-align: left;
+  }
+
+  .accordion-body {
+    flex-direction: column;
+    padding: 0.75rem 1rem 1.25rem;
+  }
+
+  .accordion-media {
+    flex: none;
+    order: 1;
+    width: 100%;
+    min-height: 200px;
+    align-self: auto;
+  }
+
+  .accordion-content-text {
+    order: 2;
+  }
+
+  .accordion-title,
+  .accordion-summary,
+  .accordion-description,
+  .accordion-features {
+    text-align: left !important;
+  }
+
+  .accordion-cta {
+    width: 100%;
+    box-sizing: border-box;
+  }
+}

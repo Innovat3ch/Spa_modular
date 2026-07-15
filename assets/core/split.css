@@ -1,0 +1,67 @@
+/* ==========================================================================
+   split.css — Layout Split (left/right)
+   Estilos ESPECIFICOS del layout split.
+   El control de align/text_align/valign está en layout.css (universal)
+   ========================================================================== */
+
+.layout--split {
+  min-height: 100vh;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  position: relative;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+.layout--split > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* Columnas: contenido usa --section-content-width, media el resto */
+.layout--split .layout-content {
+  width: var(--section-content-width);
+  box-sizing: border-box;
+}
+
+.layout--split .layout-media {
+  width: calc(100% - var(--section-content-width));
+  box-sizing: border-box;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+/* ==========================================================================
+   SPLIT-LEFT — Contenido izquierda / Media derecha (default)
+   ========================================================================== */
+.layout--split-left.layout--split .layout-content { order: 1; }
+.layout--split-left.layout--split .layout-media   { order: 2; }
+
+/* ==========================================================================
+   SPLIT-RIGHT — Media izquierda / Contenido derecha (inverso)
+   ========================================================================== */
+.layout--split-right.layout--split .layout-content { order: 2; }
+.layout--split-right.layout--split .layout-media   { order: 1; }
+
+/* ==========================================================================
+   RESPONSIVE — mobile (solo lo específico de split)
+   ========================================================================== */
+@media (max-width: 768px) {
+  .layout--split {
+    flex-direction: column !important;
+  }
+  .layout--split .layout-content,
+  .layout--split .layout-media {
+    width: 100% !important;
+    min-height: auto !important;
+    order: unset !important;
+  }
+
+  /* Panel media es auxiliar — en mobile se oculta */
+  .layout--split .layout-media {
+    display: none;
+  }
+}

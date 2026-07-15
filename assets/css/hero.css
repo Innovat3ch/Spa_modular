@@ -1,0 +1,177 @@
+/* ==========================================================================
+   hero.css — Retoques de disposición específicos del hero
+   ========================================================================== */
+
+/* ==========================================================================
+   VARIABLES — Solo las que se sobreescriben del sistema
+   ========================================================================== */
+
+.page-section {
+  --module-content-width: 60%;
+  --dark-mode: 1;
+  --content-top-gap: 0.3rem;
+  --content-top-gap-mobile: 0.5rem;
+  --section-bg-color: #000000;
+  --section-bg-image: var(--global-bg-image);
+  --section-bg-mobile: var(--global-bg-mobile);
+  --layout-icon-bg: rgba(255, 184, 70, 0.12);
+  background-attachment: fixed;
+  /**sin imagenes 
+  --section-bg-image: none;
+  --section-bg-mobile: none;
+   con imagen personalizadas 
+   --section-bg-image: url('assets/images/hero.webp');
+  --section-bg-mobile: url('assets/images/hero-mobile.webp');
+  */
+}
+
+.page-section.section-background::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  z-index: 0;
+}
+
+/* ==========================================================================
+   FONDO DE SECCIÓN
+   ========================================================================== */
+
+/*.page-section.section-background {
+  background-image: var(--section-bg-image);
+  background-size: cover;
+  background-position: center;
+}*/
+
+.page-section.section-background {
+  background-image: var(--section-bg-image);
+  background-size: cover;
+  background-position: left center; /* ancla el borde izquierdo de la imagen al borde izquierdo del viewport */
+}
+
+/* ==========================================================================
+   AJUSTE DEL CONTENIDO
+   ========================================================================== */
+
+.page-section .layout-content {
+  position: relative;
+  min-height: 100vh;
+  justify-content: flex-start;
+  padding-top: calc(var(--nav-height) + var(--content-top-gap));
+  padding-right: calc(3% + var(--dock-offset, 0px));
+  padding-left: 3%;
+  padding-bottom: 1rem;
+}
+
+@media (max-width: 768px) {
+  .page-section .layout-content {
+    padding-top: calc(var(--nav-height) + var(--content-top-gap-mobile));
+  }
+}
+
+/* ==========================================================================
+   ORDEN VISUAL — eyebrow → title → intro → contenido → cta
+   renderBase genera: eyebrow → subtitle → title → intro
+   Con flex order reordenamos visualmente sin tocar el JS
+   ========================================================================== */
+
+.page-section .section-eyebrow  { order: 1; }
+.page-section .section-title    { order: 2; }
+.page-section .section-intro    { order: 3; }
+.page-section .blocks-grid      { order: 4; }
+.page-section .section-accordion { order: 4; }
+.page-section .fullscreen-wrapper { order: 4; }
+.page-section .split-wrapper    { order: 5; }
+.page-section .section-cta      { order: 6; }
+
+/* ==========================================================================
+   TIPOGRAFÍA
+   ========================================================================== */
+
+.page-section .section-eyebrow {
+  font-family: var(--font-family);
+  font-size: 1.1rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  max-width: 100%;
+  white-space: nowrap;
+  margin-bottom: 0.4rem;
+  margin-left: auto;
+  text-align: right;
+  width: 100%;
+}
+
+.page-section .section-title {
+  order: 2;
+  margin-top: 0.4rem;
+  margin-bottom: 0.4rem;
+  display: inline-block;
+  transform-origin: left center;
+  font-size: clamp(2rem, 4vw, 3.8rem);
+  white-space: nowrap;
+  color: #f5f1ea;
+  font-weight: 800;
+  -webkit-text-stroke: 4px rgba(255, 181, 70, 0.42);
+  text-shadow:
+    0 -1px 0 rgba(255,255,255,.35),
+    0 1px 0 rgba(0,0,0,.30),
+    0 4px 12px rgba(0,0,0,.30),
+    0 12px 30px rgba(0,0,0,.18);
+}
+
+.page-section .section-subtitle {
+  color: var(--accent);
+  margin-top: 0;
+  margin-bottom: 1.5rem;
+  font-weight: 500;
+}
+
+/* ==========================================================================
+   ACCORDION/BLOCKS
+   ========================================================================== */
+
+.page-section .section-accordion,
+.page-section .blocks-grid {
+  margin-top: 2rem;
+}
+
+/* ==========================================================================
+   CTA PRINCIPAL
+   ========================================================================== */
+
+.page-section .btn-nicepage {
+  padding: 0.9rem 2rem;
+  font-family: var(--font-family);
+  font-weight: 700;
+  font-size: 1rem;
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-wide);
+  border-radius: 4px;
+  transition: transform 0.2s ease, filter 0.2s ease;
+  display: inline-block;
+  margin-top: 0.5rem;
+}
+
+.page-section .btn-nicepage:hover {
+  transform: translateY(-2px);
+  filter: brightness(1.1);
+}
+
+/* ==========================================================================
+   OVERRIDE DE ALINEACIÓN — Items centrados en hero
+   ========================================================================== */
+
+#hero .block-summary {
+  text-align: center !important;
+}
+
+#hero .item-header h3 {
+  text-align: center !important;
+}
+
+/* ==========================================================================
+   RESPONSIVE
+   ========================================================================== */
+
+@media (max-width: 768px) {
+}

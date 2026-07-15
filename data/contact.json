@@ -1,0 +1,36 @@
+{
+  "layout": "split-left",
+  "title": "Inicia tu Proyecto",
+  "subtitle": "Escríbenos para diseñar la infraestructura digital de tu negocio.",
+  "button_label": "Enviar Mensaje",
+
+  "media": {
+    "source": "section",
+    "target": "location"
+  },
+
+  "floating": {
+    "direction": "horizontal",
+    "items": [{ "source": "social", "target": "whatsapp" }]
+  },
+
+  "required_fields": {
+    "name": true,
+    "email": true,
+    "phone": false,
+    "message": true
+  },
+  "placeholders": {
+    "name": "Tu nombre completo",
+    "email": "Tu correo electrónico",
+    "phone": "Tu teléfono de contacto (opcional)",
+    "message": "Cuéntanos sobre tu negocio o proyecto..."
+  },
+  "feedback_messages": {
+    "sending": "Enviando...",
+    "validation_error": "Por favor completa los campos requeridos.",
+    "success": "✅ Mensaje enviado con éxito. Te contactaremos pronto.",
+    "error_default": "❌ Hubo un error al enviar el mensaje.",
+    "connection_error": "❌ Error de conexión con el servidor."
+  }
+}

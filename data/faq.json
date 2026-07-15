@@ -1,0 +1,146 @@
+{
+  "layout": "faq-grid",
+
+  "title": "Preguntas Frecuentes",
+
+  "items": [
+
+    {
+      "id": "presencia-digital",
+
+      "question": {
+        "type": "rich-text",
+
+        "content": [
+          {
+            "text": "¿Qué incluye ",
+            "bold": false
+          },
+          {
+            "text": "Presencia Digital",
+            "bold": true
+          },
+          {
+            "text": "?",
+            "bold": false
+          }
+        ]
+      },
+
+      "answer": {
+        "type": "paragraphs",
+
+        "content": [
+
+          {
+            "text": "Incluye diseño web responsive, integración WhatsApp, optimización SEO inicial y configuración base para negocios modernos."
+          },
+
+          {
+            "text": "La infraestructura está pensada para crecer sin rehacer todo el sistema."
+          }
+
+        ]
+      },
+
+      "features": {
+        "type": "list",
+
+        "items": [
+          "Diseño responsive",
+          "WhatsApp integrado",
+          "SEO inicial",
+          "Infraestructura escalable"
+        ]
+      },
+
+      "cta": {
+        "label": "Ver Servicios",
+        "target": "services",
+        "anchor": "web-design"
+      }
+    },
+
+    {
+      "id": "tiempo-entrega",
+
+      "question": {
+        "type": "rich-text",
+
+        "content": [
+          {
+            "text": "¿Cuánto tiempo tarda un proyecto?",
+            "bold": true
+          }
+        ]
+      },
+
+      "answer": {
+        "type": "paragraphs",
+
+        "content": [
+
+          {
+            "text": "Depende del alcance del proyecto y de la cantidad de contenido requerido."
+          },
+
+          {
+            "text": "Los proyectos básicos normalmente pueden estar listos en pocos días."
+          }
+
+        ]
+      },
+
+      "cta": {
+        "label": "Solicitar Información",
+        "target": "contact",
+        "anchor": "contact-form"
+      }
+    },
+
+    {
+      "id": "catalogo",
+
+      "question": {
+        "type": "rich-text",
+
+        "content": [
+          {
+            "text": "¿Puedo mostrar productos o catálogo?",
+            "bold": true
+          }
+        ]
+      },
+
+      "answer": {
+        "type": "paragraphs",
+
+        "content": [
+
+          {
+            "text": "Sí. El sistema puede manejar vitrinas visuales, catálogos y secciones dinámicas dependiendo del modelo de negocio."
+          }
+
+        ]
+      },
+
+      "features": {
+        "type": "list",
+
+        "items": [
+          "Galerías visuales",
+          "Cards dinámicas",
+          "Categorías",
+          "Integración WhatsApp"
+        ]
+      },
+
+      "cta": {
+        "label": "Ver Catálogo",
+        "target": "portfolio",
+        "anchor": "catalog-grid"
+      }
+    }
+
+  ]
+}

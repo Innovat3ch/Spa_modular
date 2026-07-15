@@ -1,0 +1,61 @@
+{
+  "client": {
+    "id": "SI-002",
+    "domain": "miruta.innovatech.ec",
+    "category": "project",
+    "template_id": "pyme/index2.html",
+    "umami_id": "",
+    "analytics_url": ""
+  },
+
+  "business": {
+    "brand_name": "Mi Ruta",
+    "legal_name": "Mi Ruta",
+    "tax_id": "",
+    "tagline": "Conectamos pasajeros y conductores de forma segura.",
+    "address": "Guayaquil, Ecuador",
+    "city": "Guayaquil",
+    "country": "Ecuador",
+    "google_maps": "",
+    "phone": "",
+    "whatsapp": "593000000000",
+    "email": "contacto@miruta.ec"
+  },
+
+  "appearance": {
+    "primary_color": "#0f6fff",
+    "secondary_color": "#0d0d0d",
+    "background_color": "#f5f5f5",
+    "text_primary": "#333333",
+    "text_title": "#0d0d0d",
+    "text_light": "#ffffff",
+    "font_family": "Bebas Neue",
+    "font_secondary": "DM Sans",
+    "surface_color": "#ffffff",
+    "logo_path": "/assets/images/logo.png",
+    "favicon_path": "/assets/images/favicon.png",
+    "background_image": "/assets/images/capa5.png",
+    "background_mobile": "/assets/images/hero-mobile.webp",
+    "office_image": "assets/images/office.jpg"
+  },
+
+  "navigation": {
+    "hero":      { "show": true,  "in_menu": false, "label": "" },
+    "home":      { "show": false, "in_menu": true,  "label": "Inicio" },
+    "about":     { "show": true,  "in_menu": true,  "label": "Nosotros" },
+    "services":  { "show": true,  "in_menu": true,  "label": "Servicios" },
+    "location":  { "show": true,  "in_menu": false,  "label": "Ubicación" },
+    "contact":   { "show": true,  "in_menu": true,  "label": "Contacto" },
+    "social":    { "show": false, "in_menu": false, "label": "Síguenos" },
+    "footer":    { "show": false, "in_menu": false, "label": "Pie de Página" },
+    "passenger": { "show": true,  "in_menu": false,  "label": "Pasajeros" }
+  },
+
+  "layouts": {
+    "default_layout": "accordion",
+    "default_align": "right",
+    "default_valign": "middle",
+    "default_text_align": "center",
+    "default_columns": 2
+  }
+}

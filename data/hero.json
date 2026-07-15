@@ -1,0 +1,50 @@
+{
+  "layout": "accordion",
+  "align": "right",
+  "valign": "middle",
+  "text_align": "left",
+  "columns": 2,
+
+  "title": "",
+  "subtitle": "Cómodo · Seguro · Precio Justo",
+  "intro": "Organizamos rutas reales conectando pasajeros y conductores en recorridos diarios. Una solución eficiente para quien viaja y para quien transporta.",
+
+  "items": [
+    {
+      "id": "pasajeros",
+      "title": "Pasajeros",
+      "summary": "Encuentra tu ruta ideal con puntos de abordaje identificados.",
+      "icon": "assets/images/passenger.svg",
+      "image": "",
+      "features": [
+        "Menos tiempo de espera",
+        "Información clara de recorridos",
+        "Puntos de abordaje identificados",
+        "Comunicación directa",
+        "Acceso desde cualquier celular"
+      ],
+      "cta": {
+        "label": "Solicitar Información",
+        "source": "passenger"
+      }
+    },
+    {
+      "id": "conductores",
+      "title": "Conductores",
+      "summary": "Aumenta tu ocupación y reduce recorridos vacíos.",
+      "icon": "assets/images/driver.svg",
+      "image": "",
+      "features": [
+        "Mayor ocupación de la unidad",
+        "Más pasajeros potenciales",
+        "Información de demanda por sector",
+        "Menos recorridos vacíos",
+        "Mayor productividad"
+      ],
+      "cta": {
+        "label": "Quiero Participar",
+        "source": "contact"
+      }
+    }
+  ]
+}

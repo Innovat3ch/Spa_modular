@@ -1,0 +1,19 @@
+.DS_Store
+Thumbs.db
+
+# Git metadata and local tooling
+.agents/
+.codex/
+
+# Dependency/install artifacts
+assets/formularios/vendor/
+
+# Local backups and generated exports
+assets/images/respaldos/
+errores/
+
+# Temporary or editor files
+*.log
+*.tmp
+*.bak
+*~

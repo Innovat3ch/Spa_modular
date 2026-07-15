@@ -1,0 +1,96 @@
+/* ==========================================================================
+   services.css — Estilos específicos del módulo services
+   ========================================================================== */
+
+/* ==========================================================================
+   VARIABLES — Solo las que se sobreescriben del sistema
+   ========================================================================== */
+.page-section {
+  --module-content-width: 80%;
+  --dark-mode: 0;
+  --content-top-gap: 0.3rem;
+  --content-top-gap-mobile: 0.5rem;
+  --section-bg-image: none;
+  --section-bg-mobile: none;
+}
+
+/* ==========================================================================
+   AJUSTE DEL CONTENIDO
+   ========================================================================== */
+.page-section .layout-content {
+  position: relative;
+  min-height: 100vh;
+  padding-top: calc(var(--nav-height) + var(--content-top-gap));
+  padding-right: 3%;
+  padding-left: 3%;
+  padding-bottom: 1rem;
+}
+
+@media (max-width: 768px) {
+  .page-section .layout-content {
+    padding-top: calc(var(--nav-height) + var(--content-top-gap-mobile));
+  }
+}
+
+/* ==========================================================================
+   TIPOGRAFÍA
+   ========================================================================== */
+.page-section .section-title {
+  font-size: clamp(1.4rem, 4vw, 2.2rem);
+  line-height: 1.1;
+  letter-spacing: var(--tracking-titles);
+  color: var(--text-title);
+  margin-top: 0;
+  margin-bottom: 0.5rem;
+}
+
+.page-section .section-subtitle {
+  color: var(--accent);
+  margin-top: 0;
+  margin-bottom: 1.5rem;
+  font-weight: 500;
+}
+
+.page-section .section-eyebrow {
+  font-size: 0.85rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+/* ==========================================================================
+   CTA
+   ========================================================================== */
+.page-section .btn-nicepage {
+  padding: 0.9rem 2rem;
+  font-family: var(--font-family);
+  font-weight: 700;
+  font-size: 1rem;
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-wide);
+  border-radius: 4px;
+  transition: transform 0.2s ease, filter 0.2s ease;
+  display: inline-block;
+  margin-top: 0.5rem;
+}
+
+.page-section .btn-nicepage:hover {
+  transform: translateY(-2px);
+  filter: brightness(1.1);
+}
+
+/* ==========================================================================
+   RESPONSIVE
+   ========================================================================== */
+@media (max-width: 768px) {
+  .page-section .section-title {
+    font-size: clamp(1.2rem, 6vw, 1.8rem);
+  }
+
+  .page-section .section-eyebrow {
+    font-size: 0.75rem;
+  }
+
+  .page-section .section-intro {
+    font-size: 0.9rem;
+  }
+}

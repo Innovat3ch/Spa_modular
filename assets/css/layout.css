@@ -1,0 +1,419 @@
+/* ==========================================================================
+   layout.css — Estructura base generica + tokens visuales comunes
+   + Control de layout universal (align, text_align, valign)
+   Cada layout tiene su propio CSS en assets/core/{layout}.css
+   ========================================================================== */
+
+:root {
+  /* -----------------------------------------------------------------------
+     ESTRUCTURA — nombres genericos para TODOS los layouts
+     ----------------------------------------------------------------------- */
+  --section-content-width-base: 90%;
+  --section-padding: 5%;
+  --section-gap: 0.6rem;
+  --section-content-top-gap: 1.7rem;
+  --section-content-top-gap-mobile: 2.5rem;
+
+  /* -----------------------------------------------------------------------
+     TOKENS VISUALES COMUNES (reutilizados por todos los layouts)
+     ----------------------------------------------------------------------- */
+  --layout-border: rgba(13, 13, 13, 0.1);
+  --layout-bg: var(--surface);
+  --layout-icon-bg: rgba(200, 65, 42, 0.08);
+  --layout-text: var(--text-main);
+  --title-color: var(--text-title);
+}
+
+/* ==========================================================================
+   PAGE-SECTION BASE — flex container para que align/valign funcionen
+   ========================================================================== */
+.page-section {
+  display: flex;
+  flex-direction: row;
+  box-sizing: border-box;
+}
+
+/* blocks y accordion apilan en columna — align=horizontal(align-items), valign=vertical(justify-content) */
+.layout--blocks,
+.layout--accordion {
+  flex-direction: column;
+}
+
+/* ==========================================================================
+   LAYOUT-CONTENT BASE (compartido por todos los layouts)
+   ========================================================================== */
+.layout-content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--section-gap);
+  padding: calc(var(--nav-height) + var(--section-content-top-gap)) var(--section-padding) 2rem;
+  /* CONSUME LA VARIABLE INTERACTIVA O CAE AL RESPALDO */
+  width: var(--section-content-width, var(--section-content-width-base));
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+/* ==========================================================================
+   CONTROL DE LAYOUT UNIVERSAL
+   Aplica a TODOS los layouts: fullscreen, split, blocks, accordion
+   ========================================================================== */
+
+/* ==========================================================================
+   TYPOGRAPHY TOKENS APPLIED GLOBALLY
+   ========================================================================== */
+.page-section .section-title {
+  font-size: var(--type-title-size);
+  line-height: var(--type-title-line);
+  letter-spacing: var(--type-title-spacing);
+}
+
+.page-section .section-eyebrow,
+.page-section .section-subtitle {
+  font-size: var(--type-eyebrow-size);
+  line-height: var(--type-eyebrow-line);
+  letter-spacing: var(--type-eyebrow-spacing);
+  text-transform: uppercase;
+}
+
+.page-section .section-intro {
+  font-size: var(--type-intro-size);
+  line-height: var(--type-intro-line);
+}
+
+.page-section .item-header .block-title,
+.page-section .accordion-title,
+.page-section .fs-item-title {
+  font-size: var(--type-item-title-size);
+  line-height: var(--type-item-title-line);
+}
+
+.page-section .item-header .block-summary,
+.page-section .accordion-summary,
+.page-section .fs-item-summary {
+  font-size: var(--type-item-summary-size);
+  line-height: var(--type-item-summary-line);
+}
+
+.page-section .item-content,
+.page-section .block-desc,
+.page-section .accordion-description,
+.page-section .fs-item-desc {
+  font-size: var(--type-item-body-size);
+  line-height: var(--type-item-body-line);
+}
+
+.page-section .block-features,
+.page-section .accordion-features,
+.page-section .fs-item-features {
+  font-size: var(--type-item-list-size);
+  line-height: var(--type-item-list-line);
+}
+
+/* --- ALIGN: posicion horizontal del bloque + alineacion del texto --- */
+.page-section[data-align="left"] {
+  justify-content: flex-start;
+  align-items: flex-start;
+}
+
+.page-section[data-align="left"] .layout-content {
+  align-items: flex-start;
+  text-align: left;
+}
+
+.page-section[data-align="left"] .layout-content h1,
+.page-section[data-align="left"] .layout-content h2,
+.page-section[data-align="left"] .layout-content h3 {
+  text-align: center;
+  width: 100%;
+}
+
+.page-section[data-align="center"] {
+  justify-content: center;
+  align-items: center;
+}
+
+.page-section[data-align="center"] .layout-content {
+  align-items: center;
+  text-align: center;
+}
+
+.page-section[data-align="center"] .layout-content h1,
+.page-section[data-align="center"] .layout-content h2,
+.page-section[data-align="center"] .layout-content h3 {
+  text-align: center;
+  width: 100%;
+}
+
+.page-section[data-align="right"] {
+  justify-content: flex-end;
+  align-items: flex-end;
+}
+
+.page-section[data-align="right"] .layout-content {
+  align-items: flex-end;
+  text-align: right;
+}
+
+.page-section[data-align="right"] .layout-content h1,
+.page-section[data-align="right"] .layout-content h2,
+.page-section[data-align="right"] .layout-content h3 {
+  text-align: center;
+  width: 100%;
+}
+
+/* --- TEXT_ALIGN: sobrescribe alineacion del texto --- */
+.page-section[data-text-align="center"] .layout-content,
+.page-section[data-text-align="center"] .layout-content h1,
+.page-section[data-text-align="center"] .layout-content h2,
+.page-section[data-text-align="center"] .layout-content h3 {
+  text-align: center;
+  align-items: center;
+}
+
+.page-section[data-text-align="left"] .layout-content,
+.page-section[data-text-align="left"] .layout-content h1,
+.page-section[data-text-align="left"] .layout-content h2,
+.page-section[data-text-align="left"] .layout-content h3 {
+  text-align: left;
+  align-items: flex-start;
+}
+
+.page-section[data-text-align="right"] .layout-content,
+.page-section[data-text-align="right"] .layout-content h1,
+.page-section[data-text-align="right"] .layout-content h2,
+.page-section[data-text-align="right"] .layout-content h3 {
+  text-align: right;
+  align-items: flex-end;
+}
+
+.page-section[data-text-align="justify"] .layout-content {
+  text-align: justify;
+  align-items: stretch;
+}
+
+.page-section[data-text-align="justify"] .layout-content h1,
+.page-section[data-text-align="justify"] .layout-content h2,
+.page-section[data-text-align="justify"] .layout-content h3 {
+  text-align: center;
+}
+
+.page-section[data-text-align="justify"] .layout-content p,
+.page-section[data-text-align="justify"] .layout-content .section-intro,
+.page-section[data-text-align="justify"] .layout-content .section-desc,
+.page-section[data-text-align="justify"] .layout-content .section-subtitle,
+.page-section[data-text-align="justify"] .layout-content .section-eyebrow {
+  width: 100%;
+  text-align: justify;
+  text-justify: inter-word;
+  hyphens: auto;
+}
+
+.page-section[data-text-align="justify"] .layout-content .section-eyebrow {
+  text-align: left;
+}
+
+/* --- VALIGN: posicion vertical del contenido --- */
+/* Para fullscreen y split (flex-direction: row): valign controla align-items (eje vertical) */
+.layout--fullscreen[data-valign="top"],
+.layout--split[data-valign="top"] {
+  align-items: flex-start;
+}
+
+.layout--fullscreen[data-valign="middle"],
+.layout--split[data-valign="middle"] {
+  align-items: center;
+}
+
+.layout--fullscreen[data-valign="bottom"],
+.layout--split[data-valign="bottom"] {
+  align-items: flex-end;
+}
+
+.layout--fullscreen:not([data-valign]),
+.layout--split:not([data-valign]) {
+  align-items: center;
+}
+
+/* Para layouts flex-column (blocks, accordion):
+   align  → align-items    (eje horizontal)
+   valign → justify-content (eje vertical)  */
+.layout--blocks[data-align="left"],
+.layout--accordion[data-align="left"] {
+  align-items: flex-start;
+}
+
+.layout--blocks[data-align="center"],
+.layout--accordion[data-align="center"] {
+  align-items: center;
+}
+
+.layout--blocks[data-align="right"],
+.layout--accordion[data-align="right"] {
+  align-items: flex-end;
+}
+
+.layout--blocks:not([data-align]),
+.layout--accordion:not([data-align]) {
+  align-items: center;
+}
+
+.layout--blocks[data-valign="top"],
+.layout--accordion[data-valign="top"] {
+  justify-content: flex-start;
+}
+
+.layout--blocks[data-valign="middle"],
+.layout--accordion[data-valign="middle"] {
+  justify-content: center;
+}
+
+.layout--blocks[data-valign="bottom"],
+.layout--accordion[data-valign="bottom"] {
+  justify-content: flex-end;
+}
+
+.layout--blocks:not([data-valign]),
+.layout--accordion:not([data-valign]) {
+  justify-content: center;
+}
+
+/* Para fullscreen: valign controla align-self del layout-content */
+.layout--fullscreen[data-valign="top"] .layout-content {
+  align-self: flex-start;
+  margin-top: 0;
+}
+
+.layout--fullscreen[data-valign="middle"] .layout-content {
+  align-self: center;
+}
+
+.layout--fullscreen[data-valign="bottom"] .layout-content {
+  align-self: flex-end;
+  margin-bottom: 0;
+}
+
+.layout--fullscreen:not([data-valign]) .layout-content {
+  align-self: center;
+}
+
+/* Para split: valign controla justify-content del layout-content */
+.layout--split[data-valign="top"] .layout-content {
+  justify-content: flex-start;
+}
+
+.layout--split[data-valign="middle"] .layout-content {
+  justify-content: center;
+}
+
+.layout--split[data-valign="bottom"] .layout-content {
+  justify-content: flex-end;
+}
+
+.layout--split:not([data-valign]) .layout-content {
+  justify-content: center;
+}
+
+/* ==========================================================================
+   DARK MODE — activado por data-dark="1" en .page-section
+   Todas las variables se heredan a los hijos automaticamente
+   ========================================================================== */
+.page-section[data-dark="1"] {
+  --layout-bg: rgba(255, 255, 255, 0.06);
+  --layout-border: rgba(255, 255, 255, 0.12);
+  --layout-text: var(--text-light);
+  --title-color: var(--text-light);
+  --eyebrow-color: var(--accent);
+  --subtitle-color: var(--accent);
+  --intro-color: var(--text-light);
+}
+
+/* ==========================================================================
+   ITEM CONTENT — clases de control de texto para items
+   Sin importar el text_align del módulo
+   ========================================================================== */
+.item-header,
+.item-header h1,
+.item-header h2,
+.item-header h3 {
+  text-align: left !important;
+  align-items: flex-start !important;
+}
+
+.item-content {
+  text-align: justify !important;
+}
+
+/* ==========================================================================
+   Responsive base
+   ========================================================================== */
+@media (max-width: 768px) {
+  :root {
+    --section-content-width-base: 100%;
+    --section-padding: 6%;
+    --section-gap: 1rem;
+  }
+
+  .layout-content {
+    padding: calc(var(--nav-height) + var(--section-content-top-gap-mobile)) var(--section-padding) 4rem !important;
+    width: 100% !important;
+    box-sizing: border-box;
+    align-items: center !important;
+    text-align: center !important;
+  }
+
+  .layout-content h1,
+  .layout-content h2,
+  .layout-content h3,
+  .layout-content p {
+    text-align: center !important;
+  }
+
+  .page-section[data-text-align="justify"] .layout-content p,
+  .page-section[data-text-align="justify"] .layout-content .section-intro,
+  .page-section[data-text-align="justify"] .layout-content .section-desc {
+    text-align: justify !important;
+  }
+
+  .page-section[data-text-align="justify"] .layout-content .section-eyebrow {
+    text-align: left !important;
+  }
+
+  /* En mobile: resetear align/valign */
+  .page-section[data-align] {
+    justify-content: center !important;
+    align-items: flex-start !important;
+  }
+
+  .page-section[data-align] .layout-content {
+    align-items: center !important;
+    text-align: center !important;
+  }
+
+  .page-section[data-text-align="justify"] .layout-content {
+    align-items: stretch !important;
+    text-align: justify !important;
+  }
+
+  .page-section[data-text-align="justify"] .layout-content p,
+  .page-section[data-text-align="justify"] .layout-content .section-intro,
+  .page-section[data-text-align="justify"] .layout-content .section-desc,
+  .page-section[data-text-align="justify"] .layout-content .section-subtitle {
+    text-align: justify !important;
+  }
+
+}
+
+/* ==========================================================================
+   ITEM HIGHLIGHT — usado por window.openItem() (layout.js)
+   Resalta temporalmente el item al que se navega desde otra sección
+   (ej. CTA con {source: "services", target: "web"}).
+   Genérico: aplica igual en accordion-item, block-item, fs-item.
+   ========================================================================== */
+.item-highlight {
+  animation: item-highlight-pulse 2s ease-out;
+}
+
+@keyframes item-highlight-pulse {
+  0%   { box-shadow: 0 0 0 3px var(--accent); }
+  100% { box-shadow: 0 0 0 0 transparent; }
+}

@@ -1,0 +1,167 @@
+/* ==========================================================================
+   blocks.css — Layout Blocks/Cards
+   ========================================================================== */
+
+.blocks-grid {
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(var(--columns, 2), minmax(0, 1fr));
+  grid-auto-rows: auto;
+  gap: var(--section-gap, 0.9rem);
+}
+
+/* ==========================================================================
+   ITEM BASE
+   ========================================================================== */
+.block-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+  padding: 1.25rem;
+  border-radius: 8px;
+  background: var(--layout-bg);
+  border: 1px solid var(--layout-border);
+  box-shadow: 0 10px 30px rgba(13, 13, 13, 0.06);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+  color: var(--layout-text);
+}
+
+.block-item:hover {
+  border-color: rgba(200, 65, 42, 0.24);
+  box-shadow: 0 14px 38px rgba(13, 13, 13, 0.09);
+  transform: translateY(-1px);
+}
+
+/* ==========================================================================
+   ITEM INLINE (default)
+   Icono izquierda + titulo/summary derecha + description debajo
+   ========================================================================== */
+.block-head {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+}
+
+.block-icon {
+  width: 42px;
+  height: 42px;
+  object-fit: contain;
+  flex-shrink: 0;
+  opacity: 0.85;
+}
+
+.block-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  flex: 1;
+}
+
+.block-title {
+  margin: 0;
+  color: var(--title-color);
+  letter-spacing: var(--tracking-titles);
+}
+
+.block-summary {
+  margin: 0;
+  color: var(--layout-text);
+  opacity: 0.8;
+}
+
+.block-desc {
+  margin: 0;
+  color: var(--layout-text);
+  text-align: justify;
+}
+
+.block-features {
+  display: grid;
+  gap: 0.35rem;
+  margin: 0;
+  padding-left: 0;
+  list-style: none;
+  color: var(--layout-text);
+}
+.block-features li {
+  position: relative;
+  padding-left: 1.4rem;
+}
+.block-features li::before {
+  content: '✓';
+  position: absolute;
+  left: 0;
+  color: var(--accent);
+  font-weight: 700;
+}
+
+/* ==========================================================================
+   ITEM REFERENCIA (source/target)
+   Icono arriba + titulo + summary (clickable, sin description)
+   ========================================================================== */
+.block-item--reference {
+  padding: 0;
+  overflow: hidden;
+}
+
+.block-item--reference .block-link {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 0.75rem;
+  padding: 1.25rem;
+  text-decoration: none;
+  color: inherit;
+  height: 100%;
+}
+
+.block-item--reference .block-link:hover {
+  background: rgba(200, 65, 42, 0.04);
+}
+
+.block-head--center {
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 0.5rem;
+}
+
+.block-item--reference .block-icon {
+  width: 48px;
+  height: 48px;
+}
+
+.block-item--reference .block-title {
+}
+
+.block-item--reference .block-summary {
+  opacity: 0.7;
+}
+
+/* ==========================================================================
+   SIN ICONO
+   ========================================================================== */
+.block-item--no-icon .block-head {
+  min-height: auto;
+}
+
+/* ==========================================================================
+   RESPONSIVE — mobile
+   ========================================================================== */
+@media (max-width: 768px) {
+  .blocks-grid {
+    grid-template-columns: repeat(1, minmax(0, 1fr)) !important;
+    gap: 1rem !important;
+  }
+
+  .block-item {
+    padding: 1rem;
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  .block-desc {
+    text-align: left;
+  }
+}

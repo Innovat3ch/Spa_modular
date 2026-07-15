@@ -1,0 +1,32 @@
+{
+  "items": [
+    {
+      "id": "centro",
+      "title": "Ruta Centro",
+      "summary": "Recorrido directo al centro de la ciudad.",
+      "icon": "assets/images/driver.svg"
+      
+    },
+    {
+      "id": "centro-mapasingue",
+      "title": "Mapasingue - Centro",
+      "summary": "Recorrido de Mapasingue al centro.",
+      "icon": "assets/images/driver.svg"
+      
+    },
+    {
+      "id": "daule",
+      "title": "Ruta Daule",
+      "summary": "Recorrido hacia el sector de Daule.",
+      "icon": "assets/images/driver.svg"
+      
+    },
+    {
+      "id": "alborada",
+      "title": "Ruta Alborada",
+      "summary": "Recorrido hacia La Alborada.",
+      "icon": "assets/images/driver.svg"
+      
+    }
+  ]
+}

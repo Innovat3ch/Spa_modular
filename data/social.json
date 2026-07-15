@@ -1,0 +1,39 @@
+{
+  "items": [
+    {
+      "id": "whatsapp",
+      "icon": "assets/images/whatsapp.svg",
+      "source": "url",
+      "target": "whatsapp",
+      "color": "#25d366"
+    },
+    {
+      "id": "email",
+      "icon": "assets/images/email.svg",
+      "source": "section",
+      "target": "contact",
+      "color": "#c8412a"
+    },
+    {
+      "id": "facebook",
+      "icon": "assets/images/facebook.svg",
+      "source": "url",
+      "target": "https://facebook.com/...",
+      "color": "#1877f2"
+    },
+    {
+      "id": "instagram",
+      "icon": "assets/images/instagram.svg",
+      "source": "url",
+      "target": "https://instagram.com/...",
+      "color": "#e4405f"
+    },
+    {
+      "id": "location",
+      "icon": "assets/images/location.svg",
+      "source": "section",
+      "target": "location",
+      "color": "#0f6fff"
+    }
+  ]
+}

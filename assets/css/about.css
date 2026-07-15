@@ -1,0 +1,73 @@
+/* ==========================================================================
+   about.css — Estilos específicos del módulo about
+   ========================================================================== */
+
+/* ==========================================================================
+   VARIABLES — Solo las que se sobreescriben del sistema
+   ========================================================================== */
+.page-section {
+  --module-content-width: 90%;
+  --dark-mode: 0;
+  --content-top-gap: 0.3rem;
+  --content-top-gap-mobile: 0.5rem;
+  --section-bg-image: none;
+  --section-bg-mobile: none;
+}
+
+/* ==========================================================================
+   AJUSTE DEL CONTENIDO
+   ========================================================================== */
+.page-section .layout-content {
+  position: relative;
+  min-height: 100vh;
+  padding-top: calc(var(--nav-height) + var(--content-top-gap));
+  padding-right: 3%;
+  padding-left: 3%;
+  padding-bottom: 1rem;
+}
+
+@media (max-width: 768px) {
+  .page-section .layout-content {
+    padding-top: calc(var(--nav-height) + var(--content-top-gap-mobile));
+  }
+}
+
+/* ==========================================================================
+   TIPOGRAFÍA
+   ========================================================================== */
+.page-section .section-title {
+}
+
+/* ==========================================================================
+   BLOCKS
+   ========================================================================== */
+.page-section .blocks-grid {
+  margin-top: 2rem;
+}
+
+/* ==========================================================================
+   CTA
+   ========================================================================== */
+.page-section .btn-nicepage {
+  padding: 0.9rem 2rem;
+  font-family: var(--font-family);
+  font-weight: 700;
+  font-size: 1rem;
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-wide);
+  border-radius: 4px;
+  transition: transform 0.2s ease, filter 0.2s ease;
+  display: inline-block;
+  margin-top: 0.5rem;
+}
+
+.page-section .btn-nicepage:hover {
+  transform: translateY(-2px);
+  filter: brightness(1.1);
+}
+
+/* ==========================================================================
+   RESPONSIVE
+   ========================================================================== */
+@media (max-width: 768px) {
+}

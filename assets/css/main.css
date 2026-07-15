@@ -1,0 +1,440 @@
+/* ==========================================================================
+   main.css — Estilos globales del sistema
+   Naming: siempre minúsculas, sin espacios — main.css
+   Hero: hero.css | Layouts: layout.css | Secciones: key.css
+   ========================================================================== */
+
+:root {
+  /* ==========================================================================
+     TOKENS DE DISEÑO
+     Valores por defecto tomados de config_web.json.
+     main.js los sobreescribe en runtime con los valores reales del proyecto.
+     Si main.js falla, estos fallbacks garantizan que la página se vea bien.
+     ========================================================================== */
+
+  --accent:         #c8412a;
+  --ink:            #0d0d0d;
+  --paper:          #f5f2ec;
+  --surface:        #ffffff;
+  --text-main:      #333333;
+  --text-title:     #0d0d0d;
+  --text-light:     #ffffff;
+
+  --font-family:    'Bebas Neue', sans-serif;
+  --font-secondary: 'DM Sans', sans-serif;
+
+  --nav-height: 60px;
+  --nav-height-mobile: 48px;
+
+  --tracking-wide:   0.06em;
+  --tracking-titles: 0.03em;
+  --tracking-brand:        0.14em;
+  --tracking-brand-tagline: 0.12em;
+
+  /* Typography scale shared by all sections and items */
+  --type-title-size: clamp(2.8rem, 6vw, 6.5rem);
+  --type-title-line: 0.95;
+  --type-title-spacing: 0.06em;
+
+  --type-eyebrow-size: 0.85rem;
+  --type-eyebrow-line: 1.35;
+  --type-eyebrow-spacing: 0.12em;
+
+  --type-subtitle-size: 0.95rem;
+  --type-subtitle-line: 1.5;
+
+  --type-intro-size: 1rem;
+  --type-intro-line: 1.7;
+
+  --type-item-title-size: 1.15rem;
+  --type-item-title-line: 1.2;
+  --type-item-summary-size: 0.9rem;
+  --type-item-summary-line: 1.4;
+  --type-item-body-size: 0.95rem;
+  --type-item-body-line: 1.65;
+  --type-item-list-size: 0.9rem;
+  --type-item-list-line: 1.45;
+
+  /* Menu Responsivo Control */
+  --nav-padding-y: 0.5rem;
+  --nav-padding-x: 1.25rem;
+  --nav-padding-y-mobile: 0.35rem;
+  --nav-padding-x-mobile: 0.75rem;
+  --menu-toggle-size: 44px;
+  --menu-toggle-icon-width: 24px;
+  --menu-transition-duration: 0.3s;
+  --menu-transition-timing: cubic-bezier(0.4, 0, 0.2, 1);
+  --menu-z-index: 99;
+  --menu-overlay-z-index: 98;
+  --menu-shadow: 0 12px 30px rgba(0, 0, 0, 0.08);
+}
+
+@media (max-width: 768px) {
+  :root {
+    --type-title-size: clamp(2rem, 10vw, 3rem);
+    --type-eyebrow-size: 0.75rem;
+    --type-subtitle-size: 0.85rem;
+    --type-intro-size: 0.9rem;
+
+    --type-item-title-size: 1.05rem;
+    --type-item-summary-size: 0.85rem;
+    --type-item-body-size: 0.9rem;
+    --type-item-list-size: 0.85rem;
+  }
+}
+
+/* ==========================================================================
+   BASE
+   ========================================================================== */
+body {
+  background-color: var(--paper);
+  color: var(--text-main);
+  font-family: var(--font-secondary);
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+}
+
+/* ==========================================================================
+   NAVBAR
+   ========================================================================== */
+nav {
+  background-color: var(--paper);
+  padding: var(--nav-padding-y) var(--nav-padding-x);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.75rem;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  width: auto;
+  height: var(--nav-height);
+  box-sizing: border-box;
+  z-index: 100;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+nav .brand {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex: 1;
+  min-width: 0;
+}
+
+nav .brand-text {
+  min-width: 0;
+}
+
+.nav-logo {
+  height: 40px;
+  width: auto;
+  display: block;
+  object-fit: contain;
+}
+
+nav .brand h1 {
+  font-family: var(--font-family);
+  font-weight: 700;
+  color: var(--text-title);
+  font-size: 1.4rem;
+  margin: 0;
+  letter-spacing: var(--tracking-brand);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+nav .brand span,
+#nav-lema-text {
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-brand-tagline);
+  opacity: 0.75;
+}
+
+/* Desktop Menu Links */
+.nav-links {
+  display: flex;
+  gap: 1.5rem;
+  align-items: center;
+}
+
+nav .nav-links a {
+  color: var(--text-title);
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-wide);
+  transition: color 0.3s ease;
+}
+
+nav .nav-links a:hover {
+  color: var(--accent);
+}
+
+/* Menu Toggle — hamburguesa (☰) → X al abrir */
+.nav-toggle {
+  display: none;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  width: var(--menu-toggle-size);
+  height: var(--menu-toggle-size);
+  padding: 0;
+  margin: 0;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.nav-toggle-box {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 6px;
+  width: var(--menu-toggle-icon-width);
+  height: var(--menu-toggle-icon-width);
+  pointer-events: none;
+}
+
+.nav-toggle-line {
+  display: block;
+  width: 100%;
+  height: 2px;
+  margin: 0;
+  border-radius: 1px;
+  background-color: var(--text-title);
+  transform-origin: center;
+  transition: transform var(--menu-transition-duration) var(--menu-transition-timing),
+              opacity var(--menu-transition-duration) var(--menu-transition-timing),
+              background-color var(--menu-transition-duration) var(--menu-transition-timing);
+}
+
+nav.nav-open .nav-toggle-line:nth-child(1) {
+  transform: translateY(8px) rotate(45deg);
+}
+
+nav.nav-open .nav-toggle-line:nth-child(2) {
+  opacity: 0;
+  transform: scaleX(0);
+}
+
+nav.nav-open .nav-toggle-line:nth-child(3) {
+  transform: translateY(-8px) rotate(-45deg);
+}
+
+/* Mobile: [ LOGO + NOMBRE ] ············· [ ☰ ] — menú debajo del header */
+@media (max-width: 768px) {
+  :root {
+    --nav-height: var(--nav-height-mobile);
+  }
+
+  nav {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) var(--menu-toggle-size);
+    grid-template-areas: "brand toggle";
+    align-items: center;
+    column-gap: 0.5rem;
+    height: auto;
+    min-height: var(--nav-height-mobile);
+    padding: 0.6rem 1rem;
+  }
+
+  nav .brand {
+    grid-area: brand;
+    flex: none;
+    min-width: 0;
+    gap: 16px;
+  }
+
+  nav .brand-text {
+    min-width: 0;
+    overflow: hidden;
+  }
+
+  nav .brand span,
+  #nav-lema-text {
+    display: block !important;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: 100%;
+  }
+
+  nav .brand h1 {
+    font-size: 1.15rem;
+    line-height: 1.15;
+    letter-spacing: 0.12em;
+    max-width: 100%;
+  }
+
+  .nav-logo {
+    height: 32px;
+  }
+
+  .nav-toggle {
+    grid-area: toggle;
+    display: flex;
+    justify-self: end;
+    position: relative;
+    z-index: calc(var(--menu-z-index) + 2);
+  }
+
+  /* Panel de enlaces: despliega bajo el header; logo siempre visible arriba */
+  .nav-links {
+    position: fixed;
+    top: var(--nav-height);
+    right: 0;
+    left: 0;
+    width: 100%;
+    height: calc(100dvh - var(--nav-height));
+    max-height: calc(100vh - var(--nav-height));
+    background-color: var(--paper);
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: flex-start;
+    gap: 0;
+    padding: 0.75rem var(--nav-padding-x-mobile) 1.5rem;
+    box-sizing: border-box;
+    z-index: var(--menu-z-index);
+    overflow-y: auto;
+    box-shadow: var(--menu-shadow);
+    border-top: 1px solid rgba(0, 0, 0, 0.06);
+
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transform: translateY(-12px);
+    transition:
+      transform var(--menu-transition-duration) var(--menu-transition-timing),
+      opacity var(--menu-transition-duration) var(--menu-transition-timing),
+      visibility var(--menu-transition-duration) var(--menu-transition-timing);
+  }
+
+  nav.nav-open .nav-links {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+    transform: translateY(0);
+  }
+
+  .nav-links a {
+    width: 100%;
+    text-align: center;
+    padding: 1rem 1rem;
+    margin: 0.5rem 0;
+    border-radius: 12px;
+    background-color: rgba(0, 0, 0, 0.02);
+    transition: background-color 0.3s ease, color 0.3s ease;
+    display: block;
+  }
+
+  .nav-links a:hover {
+    background-color: rgba(200, 64, 42, 0.08);
+    color: var(--accent);
+  }
+}
+
+/* ==========================================================================
+   SECCIONES GENÉRICAS
+   ========================================================================== */
+.page-section {
+  min-height: 100vh;
+  box-sizing: border-box;
+  background-color: var(--paper);
+}
+
+.section-loading {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+  color: var(--text-main);
+  opacity: 0.5;
+}
+
+.section-wrapper { width: 100%; max-width: 1100px; }
+.section-title {
+  font-size: clamp(1.4rem, 4vw, 2.2rem);
+  color: var(--title-color, var(--text-title));
+  margin: 0 0 1.5rem 0;
+  font-weight: 700;
+  letter-spacing: var(--tracking-titles);
+  display: block;
+  width: 100%;
+  text-align: center !important;
+}
+
+.section-eyebrow {
+  color: var(--eyebrow-color, var(--accent));
+  font-size: 0.85rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  margin: 0;
+}
+
+.section-subtitle {
+  color: var(--subtitle-color, var(--accent));
+  font-weight: 500;
+  margin: 0 0 1.5rem 0;
+}
+
+.section-intro {
+  color: var(--intro-color, var(--text-main));
+  margin: 0;
+}
+.section-desc    { font-size: 1.25rem; line-height: 1.7; color: var(--text-main); margin-bottom: 2rem; }
+
+/* ==========================================================================
+   DOCK DINÁMICO
+   ========================================================================== */
+#floating-dock {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  z-index: 1000;
+}
+
+#floating-dock {
+  bottom: 30px;
+  right: 20px;
+}
+
+.social-circle {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--social-color, var(--accent));
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+  transition: all 0.3s ease;
+  text-decoration: none;
+}
+
+.social-circle:hover {
+  transform: scale(1.1);
+  box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+}
+
+.social-circle img {
+  width: 24px;
+  height: 24px;
+  object-fit: contain;
+}

@@ -1,0 +1,39 @@
+{
+  "layout": "fullscreen",
+  "align": "center",
+  "text_align": "justify",
+  "valign": "top",
+  "columns": 3,
+  "title": "Quiénes Somos",
+  "subtitle": "Detrás de cada proyecto hay un equipo que cree en el potencial de tu negocio.",
+  "intro": "Somos un aliado digital para las PYMEs ecuatorianas. Sabemos que dar el salto a internet puede parecer abrumador, por eso existimos: para hacerte visible, accesible y competitivo sin complicaciones.",
+  "items": [
+    {
+      "id": "mision",
+      "title": "Nuestra Misión",
+      "description": "Democratizar la presencia digital. Trabajamos para que cualquier negocio local, sin importar su tamaño, tenga las herramientas para conectarse con más clientes y crecer de forma sostenida.",
+      "icon": "assets/images/mision.svg"
+    },
+    {
+      "id": "vision",
+      "title": "Nuestra Visión",
+      "description": "Ser el puente que transforme la forma en que los comercios ecuatorianos se relacionan con la tecnología, logrando que el mundo digital deje de ser un lujo y pase a ser una herramienta indispensable.",
+      "icon": "assets/images/vision.svg"
+    },
+    {
+      "id": "compromiso",
+      "title": "Nuestro Compromiso",
+      "description": "Cero letras pequeñas ni tecnicismos incomprensibles. Te acompañamos en cada paso con transparencia, agilidad y la seguridad de que tu inversión se traducirá en mayor alcance para tu marca.",
+      "icon": "assets/images/compromiso.svg"
+    }
+  ],
+  "floating": {
+    "direction": "vertical",
+    "items": [
+      {
+        "source": "social",
+        "target": "whatsapp"
+      }
+    ]
+  }
+}

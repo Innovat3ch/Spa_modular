@@ -1,0 +1,109 @@
+{
+  // ==========================================================================
+  // LAYOUT
+  // Controla la disposicion visual de la seccion.
+  // ==========================================================================
+  "layout": "",       // fullscreen | split-left | split-right | accordion | blocks | default
+  "align": "",        // left | center | right
+  "valign": "",       // top | middle | bottom
+  "text_align": "",   // left | center | right | justify
+  "columns": 2,       // numero positivo de columnas; usado por blocks, accordion y layouts tipo grid
+
+  // ==========================================================================
+  // CONTENIDO PRINCIPAL
+  // ==========================================================================
+  "title": "",
+  "subtitle": "",
+  "intro": "",
+
+  // ==========================================================================
+  // CTA PRINCIPAL
+  // Schema sin type. El comportamiento se infiere desde source y target.
+  // ==========================================================================
+  "cta": {
+    "label": "",
+    "source": "",   // "social" | "section" | "url"
+    "target": "",   // id del item social | key de sección | url externa
+    "message": ""   // mensaje pre-cargado (WhatsApp)
+  },
+
+  // ==========================================================================
+  // FLOATING
+  // Dock global de accesos rapidos.
+  // Cada item referencia un entry de social.json por source+target.
+  // El color y el icono los define social.json, no el módulo.
+  // ==========================================================================
+  "floating": {
+    "direction": "", // vertical | horizontal
+    "items": [
+      {
+        "source": "social", // siempre "social"
+        "target": ""        // id del item en social.json (whatsapp | email | instagram | ...)
+      }
+    ]
+  },
+
+  // ==========================================================================
+  // MEDIA
+  // Contrato unico: source + target.
+  // Por ahora se usa principalmente en contact/split y paneles vinculados.
+  // ==========================================================================
+  "media": {
+    "source": "", // "section" | "image" | "video" | "pdf" | "url"
+    "target": ""  // key de sección | path de archivo | url
+  },
+
+  // ==========================================================================
+  // ITEMS
+  // Usado por blocks, accordion y fullscreen.
+  // ==========================================================================
+  "items": [
+    {
+      "id": "",
+      "source": "",       // si es referencia externa: nombre del JSON (ej: "services")
+      "target": "",       // si es referencia externa: id del item en ese JSON
+      "title": "",
+      "summary": "",
+      "description": "",
+      "icon": "",
+      "image": "",
+      "features": [],
+      "cta": {
+        "label": "",
+        "source": "",
+        "target": "",
+        "message": ""
+      }
+    }
+  ],
+
+  // ==========================================================================
+  // NOTAS DE CONCEPTO
+  // - blocks: cards o bloques de contenido.
+  // - grid: estrategia de distribucion, no apariencia; puede apoyar blocks/cards/list.
+  // - cards: variante visual de tarjeta.
+  // - accordion: paneles expandibles.
+  // - split-left/right: misma estructura, cambia solo la posicion de media.
+  // - fullscreen: experiencia de pantalla completa.
+  // ==========================================================================
+
+  // ==========================================================================
+  // TABLA DE LAYOUT
+  // ==========================================================================
+  // Layout           | Funcion                                                    | columns | media
+  // fullscreen       | Seccion 100vh con fondo e imagen opcional                  | -       | -
+  // split-left/right | Contenido + panel media; contentWidth controla proporcion  | -       | SI
+  // blocks           | Bloques/cards de contenido                                 | SI      | -
+  // accordion        | Items apilados con cabecera desplegable                    | SI      | -
+  // grid             | Estrategia de distribucion, no layout raiz                 | SI      | -
+  // default          | Fallback desde config_web.json -> layouts.default_layout   | -       | -
+
+  // ==========================================================================
+  // NOTAS SOBRE SOCIAL / FLOATING
+  // - El color e icono de cada red social vive en social.json, no en el módulo.
+  // - El módulo solo declara qué items mostrar via floating.items[].target.
+  // - social.js (assets/core/) es quien resuelve el dock.
+  // - WhatsApp: el número se toma de config_web.json → business.whatsapp,
+  //   no se hardcodea en social.json.
+  // ==========================================================================
+}
