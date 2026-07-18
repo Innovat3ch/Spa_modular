@@ -7,13 +7,30 @@ Thumbs.db
 
 # Dependency/install artifacts
 assets/formularios/vendor/
+node_modules/
 
 # Local backups and generated exports
-assets/images/respaldos/
 errores/
+
+# Data variants and copies
+data/*copy*
+data/*mi ruta*
+data/*presencia*
+
+# Personalization variants
+*mi ruta*.json
+*presencia*.json
+assets/images/*mi ruta*
+assets/images/*presencia*
 
 # Temporary or editor files
 *.log
 *.tmp
 *.bak
+*.txt
 *~
+
+# Assets - mantener estructura, no archivos
+assets/images/**
+!assets/images/.gitkeep
+!assets/images/*/.gitkeep
