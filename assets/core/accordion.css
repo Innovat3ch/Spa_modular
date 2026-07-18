@@ -25,14 +25,9 @@
   width: 100%;
   display: grid;
   grid-template-columns: repeat(var(--columns, 1), minmax(0, 1fr));
+  grid-auto-flow: row;
   gap: var(--section-gap, 1rem);
-  align-items: start;
-}
-
-.accordion-column {
-  display: flex;
-  flex-direction: column;
-  gap: 0.9rem;
+  align-items: stretch;
 }
 
 /* ==========================================================================
@@ -41,6 +36,9 @@
 .accordion-item {
   position: relative;
   width: 100%;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
   border: 1px solid var(--layout-border);
   border-radius: 8px;
   background: var(--layout-bg);
@@ -123,39 +121,88 @@
   line-height: 1.5;
 }
 
+.accordion-code {
+  margin: 0.1rem 0 0;
+  color: var(--accent);
+  font-size: 0.78rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
 /* ==========================================================================
    BODY
    ========================================================================== */
 .accordion-body {
-  display: flex;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(260px, 32%);
   gap: 2rem;
-  align-items: stretch;
-  padding: 1rem 1.25rem 1.25rem calc(1.25rem + 42px + 1rem);
+  align-items: start;
+  flex: 1 1 auto;
+  padding: 0.4rem 1.25rem 1.25rem calc(1.25rem + 42px + 1rem);
 }
 
 .accordion-media {
-  flex: 0 0 35%;
-  order: 2;
+  justify-self: end;
+  width: 100%;
   position: relative;
+  aspect-ratio: 4 / 3;
   border-radius: 8px;
   overflow: hidden;
-  background: rgba(13, 13, 13, 0.04);
   margin: 0;
 }
 
 .accordion-media img {
-  position: absolute;
-  top: 0;
-  left: 0;
   width: 100%;
   height: 100%;
-  object-fit: cover;
   display: block;
+  object-fit: cover;
 }
 
 .accordion-content-text {
-  flex: 1;
-  order: 1;
+  min-width: 0;
+}
+
+.accordion-content-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 1rem;
+  align-items: start;
+  width: 100%;
+}
+
+.accordion-content-column {
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+  min-width: 0;
+  width: 100%;
+}
+
+.accordion-content-column--features {
+  padding-right: 0;
+}
+
+.accordion-content-column--members {
+  padding-left: 0;
+}
+
+.item-stops {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.45rem;
+  margin-top: 1rem;
+  width: 100%;
+}
+
+.item-stops .btn-nicepage {
+  margin-top: 0;
+  padding: 0.55rem 0.9rem;
+  font-size: 0.86rem;
+  letter-spacing: 0.08em;
+  width: 100%;
+  justify-content: flex-start;
+  text-align: left;
+  box-sizing: border-box;
 }
 
 .accordion-description {
@@ -171,30 +218,13 @@
   padding-left: 1.1rem;
   color: var(--layout-text);
   line-height: 1.5;
+  width: 100%;
 }
 
 .accordion-features li::marker {
   color: var(--accent);
 }
 
-.accordion-cta {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 42px;
-  padding: 0 1rem;
-  border-radius: 8px;
-  background: var(--accent);
-  color: var(--text-light);
-  text-decoration: none;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: var(--tracking-wide);
-}
-
-.accordion-cta:hover {
-  filter: brightness(0.95);
-}
 
 /* ==========================================================================
    RESPONSIVE — mobile (solo lo específico de accordion)
@@ -213,20 +243,24 @@
   }
 
   .accordion-body {
-    flex-direction: column;
+    grid-template-columns: 1fr;
     padding: 0.75rem 1rem 1.25rem;
   }
 
   .accordion-media {
-    flex: none;
-    order: 1;
     width: 100%;
     min-height: 200px;
-    align-self: auto;
+    justify-self: stretch;
   }
 
-  .accordion-content-text {
-    order: 2;
+  .accordion-content-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .accordion-content-column--features,
+  .accordion-content-column--members {
+    padding-left: 0;
+    padding-right: 0;
   }
 
   .accordion-title,
@@ -236,8 +270,8 @@
     text-align: left !important;
   }
 
-  .accordion-cta {
-    width: 100%;
-    box-sizing: border-box;
-  }
+
+
 }
+
+

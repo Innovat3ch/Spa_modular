@@ -26,23 +26,26 @@ window.renderFullscreen = async function(data, control) {
         : '';
 
       const itemSummary = item.summary
-        ? `<span class="fs-item-summary item-header">${window.escapeHTML(item.summary)}</span>`
+        ? `<span class="fs-item-summary item-header">${window.formatText(item.summary)}</span>`
         : '';
 
       // Colección resuelta (_children) — items.json v2, ej. paraderos dentro de una ruta
-      const childrenHtml = !isReference && (item._children || []).length
+      const hasChildren = !isReference && (item._children || []).length;
+      const childrenHtml = hasChildren
         ? `<div class="item-stops">
-            ${item._children.map(c => `<span class="item-stop" data-id="${window.escapeHTML(c.id)}">${window.escapeHTML(c.title || c.id)}</span>`).join('')}
+            ${await window.buildCTAList(item._children, {
+              section: data?.members_source || data?.id || 'passenger',
+              target: item.id
+            })}
           </div>`
         : '';
 
       const itemBody = !isReference
         ? `
           <span class="fs-item-body item-content">
-            ${item.description ? `<span class="fs-item-desc">${window.escapeHTML(item.description)}</span>` : ''}
+            ${item.description ? `<span class="fs-item-desc">${window.formatText(item.description)}</span>` : ''}
             ${(item.features || []).length ? `<ul class="fs-item-features">${item.features.map(f => `<li>${window.escapeHTML(f)}</li>`).join('')}</ul>` : ''}
-            ${childrenHtml}
-            ${hasCTA ? await window.buildCTA(item.cta) : ''}
+            ${hasChildren ? childrenHtml : (hasCTA ? await window.buildCTA(item.cta) : '')}
           </span>
         `
         : '';

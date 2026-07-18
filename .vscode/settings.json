@@ -1,0 +1,5 @@
+{
+    "workbench.commandPalette.showAskInChat": true,
+    "chat.agent.enabled": true,
+    "chat.byokUtilityModelDefault": "mainAgent"
+}

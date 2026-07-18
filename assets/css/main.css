@@ -32,9 +32,14 @@
   --tracking-brand-tagline: 0.12em;
 
   /* Typography scale shared by all sections and items */
-  --type-title-size: clamp(2.8rem, 6vw, 6.5rem);
-  --type-title-line: 0.95;
-  --type-title-spacing: 0.06em;
+  --type-title-size: clamp(2.6rem, 5vw, 4.8rem);
+  --type-title-line: 1;
+  --type-title-spacing: 0.03em;
+
+  /* Semantic title sizes for future header sketches */
+  --type-title-size-hero: clamp(2.8rem, 5vw, 4.8rem);
+  --type-title-size-page: clamp(2.25rem, 4.4vw, 3.4rem);
+  --type-title-size-section: clamp(1.7rem, 3vw, 2.2rem);
 
   --type-eyebrow-size: 0.85rem;
   --type-eyebrow-line: 1.35;
@@ -71,7 +76,10 @@
 
 @media (max-width: 768px) {
   :root {
-    --type-title-size: clamp(2rem, 10vw, 3rem);
+    --type-title-size: clamp(1.9rem, 8vw, 2.8rem);
+    --type-title-size-hero: clamp(2rem, 8vw, 3rem);
+    --type-title-size-page: clamp(1.8rem, 6vw, 2.4rem);
+    --type-title-size-section: clamp(1.45rem, 5vw, 1.9rem);
     --type-eyebrow-size: 0.75rem;
     --type-subtitle-size: 0.85rem;
     --type-intro-size: 0.9rem;

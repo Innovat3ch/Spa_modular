@@ -1,0 +1,156 @@
+/* ==========================================================================
+   rutas.css — Estilos específicos del módulo rutas
+   Basado en el patrón visual de services.
+   ========================================================================== */
+
+.page-section {
+  --module-content-width: 80%;
+  --dark-mode: 0;
+  --content-top-gap: 0.3rem;
+  --content-top-gap-mobile: 0.5rem;
+  --section-bg-image: url('/assets/images/heroI.png');
+  --section-bg-mobile: url('/assets/images/heroI.png');
+}
+
+.page-section.section-background {
+  background-image: var(--section-bg-image);
+  background-size: cover;
+  background-position: center top;
+}
+
+.page-section.section-background::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(255, 255, 255, 0.62);
+  z-index: 0;
+}
+
+.page-section .layout-content {
+  position: relative;
+  min-height: 100vh;
+  padding-top: calc(var(--nav-height) + var(--content-top-gap) + 0.8rem);
+  padding-right: 3%;
+  padding-left: 3%;
+  padding-bottom: 1rem;
+}
+
+#rutas .layout-content {
+  gap: 1rem;
+}
+
+.page-section .section-title {
+  font-size: clamp(1.4rem, 4vw, 2.2rem);
+  line-height: 1.1;
+  letter-spacing: var(--tracking-titles);
+  color: var(--text-title);
+  margin-top: 0;
+  margin-bottom: 0.5rem;
+}
+
+.page-section .section-subtitle {
+  color: var(--accent);
+  margin-top: 0;
+  margin-bottom: 1.2rem;
+  font-weight: 500;
+}
+
+.page-section .section-eyebrow {
+  font-size: 0.85rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+#rutas .section-title {
+  font-size: clamp(1.7rem, 4.6vw, 3rem);
+  line-height: 1.05;
+  letter-spacing: -0.03em;
+}
+
+#rutas .section-intro {
+  max-width: 62ch;
+  line-height: 1.7;
+  color: rgba(25, 25, 25, 0.8);
+  margin-bottom: 0.25rem;
+}
+
+.page-section .btn-nicepage {
+  padding: 0.9rem 2rem;
+  font-family: var(--font-family);
+  font-weight: 700;
+  font-size: 1rem;
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-wide);
+  border-radius: 4px;
+  transition: transform 0.2s ease, filter 0.2s ease;
+  display: inline-block;
+  margin-top: 0.5rem;
+}
+
+.page-section .btn-nicepage:hover {
+  transform: translateY(-2px);
+  filter: brightness(1.1);
+}
+
+.page-section .blocks-grid,
+.page-section .section-accordion {
+  margin-top: 1.25rem;
+}
+
+#rutas .accordion-icon {
+  display: none;
+}
+
+#rutas .accordion-header {
+  grid-template-columns: 1fr;
+  gap: 0.3rem;
+}
+
+#rutas .accordion-info {
+  display: flex;
+  flex-direction: column;
+}
+
+#rutas .accordion-summary {
+  max-width: 72ch;
+}
+
+#rutas .item-stops {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  margin-top: 1rem;
+}
+
+#rutas .item-stops .btn-nicepage {
+  margin-top: 0;
+  padding: 0.55rem 0.9rem;
+  font-size: 0.86rem;
+  letter-spacing: 0.08em;
+}
+
+#rutas .accordion-body {
+  gap: 1rem;
+  align-items: flex-start;
+}
+
+#rutas .accordion-media {
+  align-self: flex-start;
+  margin-top: 0.15rem;
+}
+
+@media (max-width: 768px) {
+  .page-section {
+    --module-content-width: 100%;
+    --section-bg-mobile: url('/assets/images/heroI.png');
+  }
+
+  #rutas .section-title {
+    max-width: 100%;
+  }
+
+  #rutas .section-intro {
+    max-width: 100%;
+    line-height: 1.6;
+  }
+}

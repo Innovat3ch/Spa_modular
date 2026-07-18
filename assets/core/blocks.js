@@ -26,23 +26,26 @@ window.renderBlocks = async function(data, control) {
     const ctaHtml = !isReference && hasCTA ? await window.buildCTA(item.cta) : '';
 
     const descHtml = !isReference && item.description
-      ? `<p class="block-desc item-content">${window.escapeHTML(item.description)}</p>`
+      ? `<p class="block-desc item-content">${window.formatText(item.description)}</p>`
       : '';
 
     const summaryHtml = item.summary
-      ? `<p class="block-summary">${window.escapeHTML(item.summary)}</p>`
+      ? `<p class="block-summary">${window.formatText(item.summary)}</p>`
       : '';
 
     const iconHtml = item.icon
       ? `<img class="block-icon" src="${window.escapeHTML(item.icon)}" alt="" loading="lazy">`
       : '';
 
-    // Colección resuelta (_children) — items.json v2, ej. paraderos dentro de una ruta
-    const childrenHtml = !isReference && (item._children || []).length
+    const hasMembers = !isReference && (item._children || []).length;
+    const membersHtml = hasMembers
       ? `<div class="item-stops">
-          ${item._children.map(c => `<span class="item-stop" data-id="${window.escapeHTML(c.id)}">${window.escapeHTML(c.title || c.id)}</span>`).join('')}
+          ${await window.buildCTAList(item._children, {
+            section: data?.members_source || data?.id || 'passenger'
+          })}
         </div>`
       : '';
+    const footerHtml = hasMembers ? membersHtml : ctaHtml;
 
     let contentHtml;
 
@@ -77,8 +80,7 @@ window.renderBlocks = async function(data, control) {
         </div>
         ${descHtml}
         ${featuresHtml}
-        ${childrenHtml}
-        ${ctaHtml}
+        ${footerHtml || ''}
       `;
     }
 

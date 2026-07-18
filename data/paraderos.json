@@ -1,0 +1,64 @@
+{
+  "items": [
+    {
+      "id": "p01",
+      "title": "Inicio",
+      "summary": "Estacion de la Linea 108.",
+      "query": "rutas"
+    },
+    {
+      "id": "p02",
+      "title": "Fe y Alegría",
+      "summary": "Paradero en la Cooperativa 24 de Febrero.",
+      "query": "rutas"
+    },
+    {
+      "id": "p03",
+      "title": "Juan Montalvo Norte",
+      "summary": "Paradero de conexión hacia el norte del sector.",
+      "query": "rutas"
+    },
+    {
+      "id": "p04",
+      "title": "Juan Montalvo Centro",
+      "summary": "Paradero central con salida rápida a rutas troncales.",
+      "query": "rutas"
+    },
+    {
+      "id": "p05",
+      "title": "Facso",
+      "summary": "Paradero diagonal al Centro Medico Alianza.",
+      "query": "rutas"
+    },
+    {
+      "id": "p06",
+      "title": "Sector Intermedio",
+      "summary": "Paradero de referencia para recorridos de paso.",
+      "query": "rutas"
+    },
+    {
+      "id": "p07",
+      "title": "Las Aguas",
+      "summary": "Paradero frente a la Mueblería El Bosque.",
+      "query": "rutas"
+    },
+    {
+      "id": "p08",
+      "title": "Bahia",
+      "summary": "Paradero de llegada hacia la zona céntrica en el Castillo Alameda.",
+      "query": "rutas"
+    },
+    {
+      "id": "p09",
+      "title": "Vía Daule",
+      "summary": "Paradero de conexión hacia la vía principal.",
+      "query": "rutas"
+    },
+    {
+      "id": "p10",
+      "title": "La Alborada",
+      "summary": "Paradero de referencia para la zona residencial.",
+      "query": "rutas"
+    }
+  ]
+}

@@ -46,6 +46,11 @@ window.escapeHTML = function(value) {
     .replace(/'/g, '&#039;');
 };
 
+window.formatText = function(value) {
+  if (value == null) return '';
+  return window.escapeHTML(value).replace(/\r\n|\r|\n/g, '<br>');
+};
+
 // ==========================================================================
 // ASSET URL RESOLVER
 // Convierte rutas relativas del sitio a rutas absolutas desde la raíz web.
@@ -286,6 +291,9 @@ window.debugLayoutState = function(sectionOrSelector = '#app section') {
 // - Con "id" propio   → entidad real. Nunca se pisa. Si además trae
 //                       source+targets, es una colección: se resuelve en
 //                       _children, sin tocar su identidad.
+// - Con "query"       → consulta inversa. Busca en el catálogo indicado
+//                       quién referencia a este item y expone el resultado
+//                       en _children.
 //
 // La resolución es recursiva: un item externo (traído por una referencia
 // pura) puede él mismo ser una colección — se detecta después del merge,
@@ -304,51 +312,109 @@ async function _loadSource(source) {
   return _jsonCache[source];
 }
 
-async function _resolveOne(item) {
+async function _resolveQuery(item) {
+  if (!item?.id || !item?.query) return [];
+
+  const querySource = await _loadSource(item.query);
+  const candidates = querySource?.items || [];
+
+  return candidates.filter(candidate => {
+    if (!candidate || !candidate.source || !Array.isArray(candidate.targets)) return false;
+    return candidate.targets.includes(item.id);
+  });
+}
+
+function _resolveKey(item) {
+  if (!item) return '';
+  if (item.id) return `${item.source || ''}::${item.id}`;
+  const target = Array.isArray(item.targets) ? item.targets[0] || '' : '';
+  return `${item.source || ''}::${target}`;
+}
+
+async function _resolveOne(item, seen = new Set()) {
+  const key = _resolveKey(item);
+  if (key && seen.has(key)) {
+    return item;
+  }
+  const nextSeen = key ? new Set(seen).add(key) : new Set(seen);
+
+  const directTargets = Array.isArray(item?.targets) && item.targets.length
+    ? item.targets
+    : (item?.target ? [item.target] : []);
+
   // Inline, sin referencia — se devuelve tal cual
-  if (!item.source || !Array.isArray(item.targets) || !item.targets.length) {
+  const hasDirectReference = !!(item?.source && directTargets.length);
+  const hasQuery = !!item.query;
+
+  if (!hasDirectReference && !hasQuery) {
     return item;
   }
 
-  const sourceData = await _loadSource(item.source);
+  const sourceData = hasDirectReference ? await _loadSource(item.source) : null;
 
   // Con id propio → ENTIDAD. Nunca se pisa. Resolver su colección.
   if (item.id) {
-    const children = (
-      await Promise.all(item.targets.map(async t => {
-        const found = (sourceData?.items || []).find(s => s.id === t);
-        return found ? _resolveOne(found) : null;   // recursivo: un hijo puede ser colección también
-      }))
-    ).filter(Boolean);
+    const children = hasDirectReference
+      ? (
+          await Promise.all(directTargets.map(async t => {
+            const found = (sourceData?.items || []).find(s => s.id === t);
+            return found ? _resolveOne(found, nextSeen) : null;   // recursivo: un hijo puede ser colección también
+          }))
+        ).filter(Boolean)
+      : [];
 
-    return { ...item, _children: children };
+    const queryChildren = hasQuery
+      ? (
+          await Promise.all((await _resolveQuery(item)).map(async found => _resolveOne(found, nextSeen)))
+        ).filter(Boolean)
+      : [];
+
+    const mergedChildren = [...children, ...queryChildren];
+
+    return {
+      ...item,
+      ...(mergedChildren.length ? { _children: mergedChildren } : {})
+    };
   }
 
   // Sin id propio → REFERENCIA PURA. Se reemplaza por el externo.
-  const externalItem = (sourceData?.items || []).find(s => s.id === item.targets[0]);
+  if (hasQuery) {
+    const queryChildren = (
+      await Promise.all((await _resolveQuery(item)).map(async found => _resolveOne(found, nextSeen)))
+    ).filter(Boolean);
+
+    if (queryChildren.length) {
+      return {
+        ...item,
+        _children: queryChildren
+      };
+    }
+  }
+
+  const externalItem = (sourceData?.items || []).find(s => s.id === directTargets[0]);
   if (!externalItem) return null;
 
-  const { source, targets, ...localOverrides } = item;
+  const { source, targets, target, ...localOverrides } = item;
   const merged = {
     ...externalItem,
     ...localOverrides,
     _source: source,
-    _targets: targets
+    _targets: directTargets
   };
 
   // El objeto externo puede él mismo ser una colección (id + source + targets
   // propios) — se detecta recién ahora, después del merge.
-  return _resolveOne(merged);
+  return _resolveOne(merged, nextSeen);
 }
 
 window.resolveItems = async function(items) {
   if (!Array.isArray(items) || !items.length) return [];
 
   // Precargar en paralelo todos los sources únicos de este nivel
-  const sources = [...new Set(items.map(i => i.source).filter(Boolean))];
+  const sources = [...new Set(items.flatMap(i => [i.source, i.query]).filter(Boolean))];
   await Promise.all(sources.map(_loadSource));
 
-  const resolved = await Promise.all(items.map(_resolveOne));
+  const resolved = await Promise.all(items.map(item => _resolveOne(item)));
   return resolved.filter(Boolean);
 };
 
@@ -407,9 +473,9 @@ window.resolveSocialChannel = async function(channelId, message) {
 // ==========================================================================
 
 window.renderBase = async function(data) {
-  const eyebrow = data.subtitle ? `<p class="section-eyebrow">${window.escapeHTML(data.subtitle)}</p>` : '';
-  const title = data.title ? `<h2 class="section-title">${window.escapeHTML(data.title)}</h2>` : '';
-  const intro = data.intro ? `<p class="section-intro">${window.escapeHTML(data.intro)}</p>` : '';
+  const eyebrow = data.subtitle ? `<p class="section-eyebrow">${window.formatText(data.subtitle)}</p>` : '';
+  const title = data.title ? `<h2 class="section-title">${window.formatText(data.title)}</h2>` : '';
+  const intro = data.intro ? `<p class="section-intro">${window.formatText(data.intro)}</p>` : '';
   const cta = data.cta ? await window.buildCTA(data.cta) : '';
 
   return {

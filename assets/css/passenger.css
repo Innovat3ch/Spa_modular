@@ -28,6 +28,10 @@
   padding-bottom: 1rem;
 }
 
+#passenger .layout-content {
+  gap: 0.9rem;
+}
+
 @media (max-width: 768px) {
   .page-section .layout-content {
     padding-top: calc(var(--nav-height) + var(--content-top-gap-mobile));
@@ -38,24 +42,53 @@
    TIPOGRAFÍA
    ========================================================================== */
 .page-section .section-title {
-  margin-top: 0.4rem;
-  margin-bottom: 0.4rem;
+  margin-top: 0.15rem;
+  margin-bottom: 0.15rem;
   font-weight: 800;
+}
+
+#passenger .section-title {
+  font-size: clamp(2.3rem, 4.8vw, 4rem);
+  line-height: 0.95;
+  letter-spacing: -0.04em;
+  white-space: nowrap;
+  margin-inline: auto;
 }
 
 .page-section .section-subtitle {
   color: var(--accent);
-  margin-top: 0;
-  margin-bottom: 1.5rem;
-  font-weight: 500;
+  margin-top: 0.1rem;
+  margin-bottom: 1rem;
+  font-weight: 700;
+}
+
+#passenger .section-subtitle {
+  display: block;
+  width: 100%;
+  max-width: 76ch;
+  margin-inline: 0;
+  text-align: left;
+  font-size: 0.82rem;
+  letter-spacing: 0.18em;
+}
+
+#passenger .section-intro {
+  max-width: 76ch;
+  margin-inline: 0;
+  line-height: 1.75;
+  color: rgba(25, 25, 25, 0.78);
 }
 
 /* ==========================================================================
    BLOCKS — grid de rutas
    ========================================================================== */
 .page-section .blocks-grid {
-  margin-top: 2rem;
+  margin-top: 1.6rem;
   width: 100%;
+}
+
+#passenger .blocks-grid {
+  max-width: 100%;
 }
 
 /* ==========================================================================
@@ -85,5 +118,14 @@
 @media (max-width: 768px) {
   .page-section {
     --module-content-width: 100%;
+  }
+
+  #passenger .section-title {
+    max-width: 100%;
+  }
+
+  #passenger .section-intro {
+    max-width: 100%;
+    line-height: 1.65;
   }
 }

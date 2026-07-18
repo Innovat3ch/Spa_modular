@@ -10,6 +10,8 @@ Este documento describe el estado real del framework, verificado contra el códi
 
 ---
 
+Referencia complementaria: [`DICCIONARIO_VARIABLES.md`](/D:/web/Mi%20Ruta/DICCIONARIO_VARIABLES.md)
+
 ## 1. Objetivo y Metodología
 
 Cada afirmación fue verificada contra el código fuente real o contra una prueba ejecutada (no solo revisión visual). Donde el código y la documentación anterior no coincidían, se documenta el estado real del código y se marca la discrepancia como pendiente de decisión o corrección.

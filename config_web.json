@@ -48,7 +48,8 @@
     "contact":   { "show": true,  "in_menu": true,  "label": "Contacto" },
     "social":    { "show": false, "in_menu": false, "label": "Síguenos" },
     "footer":    { "show": false, "in_menu": false, "label": "Pie de Página" },
-    "passenger": { "show": true,  "in_menu": false,  "label": "Pasajeros" }
+    "passenger": { "show": true,  "in_menu": false,  "label": "Pasajeros" },
+    "rutas":     { "show": true,  "in_menu": false,  "label": "Rutas" }
   },
 
   "layouts": {

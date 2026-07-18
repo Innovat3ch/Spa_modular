@@ -1,32 +1,57 @@
 {
+  "layout": "accordion",
+  "align": "left",
+  "valign": "top",
+  "columns": 1,
+  "title": "Rutas",
+  "subtitle": "Recorridos disponibles",
+  "intro": "Selecciona una ruta para ver sus paraderos.",
   "items": [
     {
-      "id": "centro",
-      "title": "Ruta Centro",
-      "summary": "Recorrido directo al centro de la ciudad.",
-      "icon": "assets/images/driver.svg"
-      
+      "id": "MAPE-CT",
+      "title": "Mapasingue Este - Centro de Guayaquil",
+      "summary": "Cobertura desde Mapasingue hacia el centro de la ciudad y zonas cercanas.",
+      "features": [
+        "Las Aguas",
+        "La Facso",
+        "Urdesa Central",
+        "Urdesa Norte",
+        "Policentro"
+      ],
+      "image": "assets/images/Facso - Ceibos.png",
+      "source": "paraderos",
+      "targets": ["p01", "p02", "p05", "p07", "p08"]
     },
     {
-      "id": "centro-mapasingue",
-      "title": "Mapasingue - Centro",
-      "summary": "Recorrido de Mapasingue al centro.",
-      "icon": "assets/images/driver.svg"
-      
+      "id": "JM-CT",
+      "title": "Juan Montalvo - Centro de Guayaquil",
+      "summary": "Cobertura desde Juan Montalvo hacia el centro por la avenida Juan Tanca Marengo o Las Aguas.",
+      "image": "assets/images/Facso - Ceibos.png",
+      "features": [
+        "Las Aguas",
+        "La Facso",
+        "Urdesa Central",
+        "Urdesa Norte",
+        "Policentro"
+      ],
+      "source": "paraderos",
+      "targets": ["p03", "p04", "p07", "p08"]
     },
     {
-      "id": "daule",
-      "title": "Ruta Daule",
-      "summary": "Recorrido hacia el sector de Daule.",
-      "icon": "assets/images/driver.svg"
-      
+      "id": "MAPE-VVD",
+      "title": "Mapasingue Este - Vía Daule",
+      "summary": "Recorrido hacia el sector de la Vía Daule.",
+      "image": "assets/images/Facso - Ceibos.png",
+      "source": "paraderos",
+      "targets": ["p01", "p02", "p09"]
     },
     {
-      "id": "alborada",
-      "title": "Ruta Alborada",
-      "summary": "Recorrido hacia La Alborada.",
-      "icon": "assets/images/driver.svg"
-      
+      "id": "MAPE-ALB",
+      "title": "Mapasingue Este - La Alborada",
+      "summary": "Recorrido hacia La Alborada pasando por la Av. Las Aguas y Benjamín Carrión hasta la Etapa 5.",
+      "image": "assets/images/Facso - Ceibos.png",
+      "source": "paraderos",
+      "targets": ["p01", "p02", "p10"]
     }
   ]
 }

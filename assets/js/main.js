@@ -231,57 +231,53 @@ function configurarAccordionExclusive() {
 
   function getColumnCount(grid) {
     if (window.matchMedia('(max-width: 768px)').matches) return 1;
-    // Lee --columns desde el style inline (inyectado por accordion.js).
-    // Antes se leía data-columns, que ya no existe desde v2.0.
     const raw = grid?.style?.getPropertyValue('--columns')?.trim()
       || getComputedStyle(grid)?.getPropertyValue('--columns')?.trim();
     const columns = Number(raw || 1);
     return Number.isFinite(columns) && columns > 0 ? columns : 1;
   }
 
-  function getItemColumn(item) {
-    const col = item.closest('.accordion-column');
-    if (!col) return 0;
-    const grid = col.closest('.section-accordion');
-    if (!grid) return 0;
-    const columns = [...grid.querySelectorAll('.accordion-column')];
-    return columns.indexOf(col);
+  function getGridItems(grid) {
+    if (!grid) return [];
+    return [...grid.children].filter(node => node.classList?.contains('accordion-item'));
   }
 
-  function closeSameColumn(item) {
+  function getItemColumn(item, grid = null) {
+    const currentGrid = grid || item.closest('.section-accordion');
+    if (!currentGrid) return 0;
+    const columns = getColumnCount(currentGrid);
+    const items = getGridItems(currentGrid);
+    const index = items.indexOf(item);
+    return index >= 0 ? index % columns : 0;
+  }
+
+  function closeOtherItems(item) {
     const grid = item.closest('.section-accordion');
     if (!grid) return;
+    const activeColumn = getItemColumn(item, grid);
 
-    const activeColumn = getItemColumn(item);
     grid.querySelectorAll('.accordion-item[open]').forEach(other => {
       if (other === item) return;
-      if (getItemColumn(other) === activeColumn) other.removeAttribute('open');
+      if (getItemColumn(other, grid) === activeColumn) {
+        other.removeAttribute('open');
+      }
     });
   }
 
   function normalizeAccordionOpenState(grid) {
     if (!grid) return;
-    const cols = getColumnCount(grid);
+    const columns = getColumnCount(grid);
+    const items = getGridItems(grid);
 
-    const openByColumn = {};
-    grid.querySelectorAll('.accordion-item[open]').forEach(item => {
-      const col = getItemColumn(item);
-      if (!openByColumn[col]) openByColumn[col] = [];
-      openByColumn[col].push(item);
-    });
+    for (let c = 0; c < columns; c += 1) {
+      const columnItems = items.filter((_, index) => index % columns === c);
+      if (!columnItems.length) continue;
 
-    Object.values(openByColumn).forEach(items => {
-      if (items.length <= 1) return;
-      items.slice(1).forEach(item => item.removeAttribute('open'));
-    });
-
-    const allColumns = [...grid.querySelectorAll('.accordion-column')];
-    for (let c = 0; c < cols; c++) {
-      if (!openByColumn[c] || openByColumn[c].length === 0) {
-        const column = allColumns[c];
-        if (!column) continue;
-        const target = column.querySelector('.accordion-item');
-        if (target) target.setAttribute('open', '');
+      const openItems = columnItems.filter(item => item.open);
+      if (openItems.length > 1) {
+        openItems.slice(1).forEach(item => item.removeAttribute('open'));
+      } else if (openItems.length === 0) {
+        columnItems[0].setAttribute('open', '');
       }
     }
   }
@@ -291,7 +287,7 @@ function configurarAccordionExclusive() {
     item.dataset.exclusiveBound = '1';
     item.addEventListener('toggle', () => {
       if (!item.open) return;
-      closeSameColumn(item);
+      closeOtherItems(item);
     });
   }
 
@@ -432,62 +428,6 @@ function abrirServicioPendiente() {
 }
 
 // ==========================================================================
-// EQUALIZAR ALTURA DE HEADERS EN ACCORDION
-// ==========================================================================
-
-function equalizarAlturaHeaders() {
-  // Si es mobile, limpiar y no hacer nada
-  if (window.matchMedia('(max-width: 768px)').matches) {
-    document.querySelectorAll('.accordion-header[data-eq]').forEach(h => {
-      h.style.minHeight = '';
-      delete h.dataset.eq;
-    });
-    return;
-  }
-
-  document.querySelectorAll('.section-accordion').forEach(grid => {
-    const columns = [...grid.querySelectorAll('.accordion-column')];
-    if (!columns.length) return;
-
-    const numRows = Math.max(...columns.map(c => c.querySelectorAll('.accordion-item').length));
-
-    for (let r = 0; r < numRows; r++) {
-      const headersInRow = [];
-      for (let c = 0; c < columns.length; c++) {
-        const items = columns[c].querySelectorAll('.accordion-item');
-        if (items[r]) {
-          const header = items[r].querySelector('.accordion-header');
-          if (header) headersInRow.push(header);
-        }
-      }
-
-      if (headersInRow.length <= 1) continue;
-
-      // 1. Limpiar altura previa para medir el tamaño real del texto
-      headersInRow.forEach(h => h.style.minHeight = '');
-
-      // 2. Forzar a que el navegador recalcule
-      void grid.offsetHeight;
-
-      // 3. Medir y encontrar el más alto
-      let maxH = 0;
-      headersInRow.forEach(h => {
-        const height = h.getBoundingClientRect().height;
-        if (height > maxH) maxH = height;
-      });
-
-      // 4. Aplicar a todos los de la fila (el espacio sobrante cae abajo por el align-items: start)
-      if (maxH > 0) {
-        headersInRow.forEach(h => {
-          h.style.minHeight = maxH + 'px';
-          h.dataset.eq = '1';
-        });
-      }
-    }
-  });
-}
-
-// ==========================================================================
 // INIT
 // ==========================================================================
 
@@ -529,23 +469,9 @@ document.addEventListener('DOMContentLoaded', async () => {
   configurarNavToggle();
   configurarAccordionExclusive();
 
-  // Equalizar headers al cargar
-  setTimeout(equalizarAlturaHeaders, 50);
-  
-  // Equalizar headers al hacer resize
-  let resizeTimer;
-  window.addEventListener('resize', () => {
-    clearTimeout(resizeTimer);
-    resizeTimer = setTimeout(equalizarAlturaHeaders, 150);
-  });
-
   document.addEventListener('sectionChanged', async (e) => {
     const { data } = e.detail;
     await window.actualizarDock(data?.floating);
-    
-    // Re-equalizar cuando cambia la sección
-    requestAnimationFrame(() => setTimeout(equalizarAlturaHeaders, 50));
-    
     abrirServicioPendiente();
   });
 

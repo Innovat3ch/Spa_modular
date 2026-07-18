@@ -81,3 +81,53 @@ window.buildCTA = async function(cta) {
       ${label}
     </a>`;
 };
+
+window.buildCTAList = async function(items = [], options = {}) {
+  if (!Array.isArray(items) || !items.length) return '';
+
+  const ctas = await Promise.all(items.map(async item => {
+    if (!item) return '';
+    if (item.cta && item.cta.label && item.cta.source) {
+      return window.buildCTA(item.cta);
+    }
+    if (!item.id) return '';
+
+    const label = item.title || item.summary || item.id;
+    return window.buildCTA({
+      label,
+      source: options.section || 'passenger',
+      target: item.id
+    });
+  }));
+
+  return ctas.filter(Boolean).join('');
+};
+
+window.buildMembersList = async function(items = [], options = {}) {
+  if (!Array.isArray(items) || !items.length) return '';
+
+  const lis = await Promise.all(items.map(async item => {
+    if (!item?.id) return '';
+    const cta = item.cta && item.cta.label && item.cta.source
+      ? item.cta
+      : { label: item.title || item.summary || item.id, source: options.section || 'passenger', target: item.id };
+
+    const resolved = await window.resolveCTALink(cta);
+    const label = window.escapeHTML(cta.label);
+    if (!resolved?.href) return `<li>${label}</li>`;
+
+    const href = window.escapeHTML(resolved.href);
+    if (resolved.external) {
+      return `<li><a href="${href}" target="_blank" rel="noopener">${label}</a></li>`;
+    }
+
+    const dataAttrs = [
+      `data-section="${window.escapeHTML(resolved.section)}"`,
+      resolved.item ? `data-service="${window.escapeHTML(resolved.item)}"` : ''
+    ].filter(Boolean).join(' ');
+
+    return `<li><a href="${href}" ${dataAttrs}>${label}</a></li>`;
+  }));
+
+  return `<ul class="accordion-members item-content">${lis.filter(Boolean).join('')}</ul>`;
+};

@@ -9,11 +9,21 @@ Thumbs.db
 assets/formularios/vendor/
 
 # Local backups and generated exports
-assets/images/respaldos/
 errores/
+
+# Personalization variants
+*mi ruta*.json
+*presencia*.json
+assets/images/*mi ruta*
+assets/images/*presencia*
 
 # Temporary or editor files
 *.log
 *.tmp
 *.bak
 *~
+
+# Assets - mantener estructura, no archivos
+assets/images/**
+!assets/images/.gitkeep
+!assets/images/*/.gitkeep

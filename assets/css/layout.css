@@ -65,6 +65,8 @@
   font-size: var(--type-title-size);
   line-height: var(--type-title-line);
   letter-spacing: var(--type-title-spacing);
+  text-align: center;
+  width: 100%;
 }
 
 .page-section .section-eyebrow,
@@ -109,6 +111,58 @@
   line-height: var(--type-item-list-line);
 }
 
+/* ==========================================================================
+   MEDIA FRAMES
+   Regla común para imágenes dentro de cards, accordions y fullscreen.
+   El contenedor fija la proporción y la imagen se adapta sin deformarse.
+   ========================================================================== */
+.page-section .block-media,
+.page-section .accordion-media,
+.page-section .fs-media,
+.page-section .layout-media {
+  overflow: hidden;
+  border-radius: 10px;
+  background: rgba(13, 13, 13, 0.04);
+}
+
+.page-section .block-media img,
+.page-section .accordion-media img,
+.page-section .fs-media img,
+.page-section .layout-media img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* ==========================================================================
+   CTA BASE
+   .btn-nicepage es la clase que cta.js genera para cualquier enlace
+   reutilizado por layouts, así que su caja visual vive aquí.
+   ========================================================================== */
+.btn-nicepage {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  align-self: flex-start;
+  min-height: 42px;
+  padding: 0 1.1rem;
+  border-radius: 8px;
+  background: var(--accent);
+  color: var(--text-light);
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-wide, 0.04em);
+  white-space: nowrap;
+  transition: filter 0.2s ease;
+}
+
+.btn-nicepage:hover {
+  filter: brightness(0.92);
+}
+
 /* --- ALIGN: posicion horizontal del bloque + alineacion del texto --- */
 .page-section[data-align="left"] {
   justify-content: flex-start;
@@ -123,8 +177,6 @@
 .page-section[data-align="left"] .layout-content h1,
 .page-section[data-align="left"] .layout-content h2,
 .page-section[data-align="left"] .layout-content h3 {
-  text-align: center;
-  width: 100%;
 }
 
 .page-section[data-align="center"] {
@@ -140,8 +192,6 @@
 .page-section[data-align="center"] .layout-content h1,
 .page-section[data-align="center"] .layout-content h2,
 .page-section[data-align="center"] .layout-content h3 {
-  text-align: center;
-  width: 100%;
 }
 
 .page-section[data-align="right"] {
@@ -157,8 +207,6 @@
 .page-section[data-align="right"] .layout-content h1,
 .page-section[data-align="right"] .layout-content h2,
 .page-section[data-align="right"] .layout-content h3 {
-  text-align: center;
-  width: 100%;
 }
 
 /* --- TEXT_ALIGN: sobrescribe alineacion del texto --- */
@@ -210,6 +258,12 @@
 
 .page-section[data-text-align="justify"] .layout-content .section-eyebrow {
   text-align: left;
+}
+
+.page-section[data-text-align="left"] .layout-content > *,
+.page-section[data-text-align="right"] .layout-content > *,
+.page-section[data-text-align="justify"] .layout-content > * {
+  width: 100%;
 }
 
 /* --- VALIGN: posicion vertical del contenido --- */
