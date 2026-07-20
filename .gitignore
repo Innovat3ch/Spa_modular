@@ -3,6 +3,7 @@ Thumbs.db
 
 # Git metadata and local tooling
 .agents/
+.vscode/
 .codex/
 
 # Dependency/install artifacts
@@ -11,6 +12,11 @@ node_modules/
 
 # Local backups and generated exports
 errores/
+tests/
+
+# Proyectos/datos separados
+catalogo/
+qr/
 
 # Data variants and copies
 data/*copy*
@@ -33,4 +39,3 @@ assets/images/*presencia*
 # Assets - mantener estructura, no archivos
 assets/images/**
 !assets/images/.gitkeep
-!assets/images/*/.gitkeep
