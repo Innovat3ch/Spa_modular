@@ -33,17 +33,15 @@ window.renderBlocks = async function(data, control) {
       ? `<p class="block-summary">${window.formatText(item.summary)}</p>`
       : '';
 
-    const iconHtml = item.icon
-      ? `<img class="block-icon" src="${window.escapeHTML(item.icon)}" alt="" loading="lazy">`
-      : '';
+const iconHtml = item.icon
+       ? `<img class="block-icon" src="${window.escapeHTML(window.resolveAssetUrl(item.icon))}" alt="" loading="lazy">`
+       : '';
 
     const hasMembers = !isReference && (item._children || []).length;
     const membersHtml = hasMembers
-      ? `<div class="item-stops">
-          ${await window.buildCTAList(item._children, {
-            section: data?.members_source || data?.id || 'passenger'
-          })}
-        </div>`
+      ? await window.buildMembersList(item._children, {
+          section: data?.members_source || data?.id || 'passenger'
+        })
       : '';
     const footerHtml = hasMembers ? membersHtml : ctaHtml;
 

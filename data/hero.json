@@ -1,5 +1,5 @@
 {
-  "layout": "accordion",
+  "layout": "block",
   "align": "right",
   "valign": "middle",
   "text_align": "left",

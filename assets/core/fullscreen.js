@@ -17,9 +17,9 @@ window.renderFullscreen = async function(data, control) {
       const isReference = item._source && Array.isArray(item._targets) && item._targets.length;
       const hasCTA = item.cta && item.cta.label && item.cta.source;
 
-      const itemIcon = item.icon
-        ? `<img class="fs-item-icon" src="${window.escapeHTML(item.icon)}" alt="" loading="lazy">`
-        : '';
+const itemIcon = item.icon
+       ? `<img class="fs-item-icon" src="${window.escapeHTML(window.resolveAssetUrl(item.icon))}" alt="" loading="lazy">`
+       : '';
 
       const itemTitle = item.title
         ? `<strong class="fs-item-title item-header">${window.escapeHTML(item.title)}</strong>`
@@ -32,12 +32,9 @@ window.renderFullscreen = async function(data, control) {
       // Colección resuelta (_children) — items.json v2, ej. paraderos dentro de una ruta
       const hasChildren = !isReference && (item._children || []).length;
       const childrenHtml = hasChildren
-        ? `<div class="item-stops">
-            ${await window.buildCTAList(item._children, {
-              section: data?.members_source || data?.id || 'passenger',
-              target: item.id
-            })}
-          </div>`
+        ? await window.buildMembersList(item._children, {
+            section: data?.members_source || data?.id || 'passenger'
+          })
         : '';
 
       const itemBody = !isReference

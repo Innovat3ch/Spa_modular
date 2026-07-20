@@ -71,17 +71,15 @@
     return defaultValue;
   }
 
-  function resolveContentWidth(data, config) {
-    const explicit = data?.contentWidth || data?.content_width || data?.appearance?.content_width;
-    if (explicit != null && explicit !== '') {
-      const raw = String(explicit).trim();
-      if (/^\d+(?:\.\d+)?$/.test(raw)) return `${raw}%`;
-      return raw;
-    }
-    const align = resolveProp(data, config, 'align', 'center');
-    if (align === 'center') return '90%';
-    return '50%';
-  }
+function resolveContentWidth(data, config) {
+  const explicit = data?.contentWidth || data?.content_width || data?.appearance?.content_width;
+  const resolved = window.resolveSectionWidth(explicit);
+  if (resolved !== '') return resolved;
+  
+  const align = resolveProp(data, config, 'align', 'center');
+  if (align === 'center') return '90%';
+  return '50%';
+}
 
   function buildLayoutControl(data, config, layout) {
     const align     = resolveProp(data, config, 'align', 'center');

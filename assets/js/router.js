@@ -3,8 +3,6 @@
 // Naming: siempre minúsculas, sin espacios — router.js
 // REGLA: si show !== true, la sección NO existe. No se consulta JSON.
 // Contrato del módulo: window.load(config, key) → inyecta HTML al DOM
-//                      window.setup.before(html, data) → HTML string (opcional)
-//                      window.setup.after(data, config) → void (opcional)
 // ==========================================================================
 
 window.Router = (function () {
@@ -118,19 +116,15 @@ window.Router = (function () {
 
   // --------------------------------------------------------------------------
   // UTIL: cargar módulo JS dinámicamente
+  // Reusa window.loadScript (definido en main.js) para inyectar en <head> y
+  // evitar duplicados, en vez de crear un tercer cargador que metía en <body>.
   // --------------------------------------------------------------------------
   async function loadModule(key) {
 
     if (moduleCache[key]) return moduleCache[key];
 
     try {
-      await new Promise((resolve, reject) => {
-        const script = document.createElement("script");
-        script.src = `/assets/js/${key}.js`;
-        script.onload = resolve;
-        script.onerror = reject;
-        document.body.appendChild(script);
-      });
+      await window.loadScript(`/assets/js/${key}.js`);
 
       // Capturar window.load inmediatamente tras el onload del script.
       // CRÍTICO: window.load es sobreescrito en cada carga de módulo,
@@ -206,6 +200,7 @@ window.Router = (function () {
     // EJECUTAR window.load(config, key)
     // El módulo se encarga de inyectar al DOM y ejecutar setup.before/after
     // ----------------------------------------------------------------------
+    let renderOk = true;
     try {
       await module(CONFIG, key);
       // Módulo async — ya escribió al DOM directamente
@@ -213,7 +208,15 @@ window.Router = (function () {
     } catch (err) {
       console.error(`[Router] Error renderizando ${key}`, err);
       root.innerHTML = '<div class="section-loading">Error cargando la sección.</div>';
+      renderOk = false;
     }
+
+    // ----------------------------------------------------------------------
+    // EFECTOS DE ÉXITO — SOLO si el render no falló.
+    // Antes la URL y el evento sectionChanged se disparaban igual en fallo,
+    // dejando la app en estado inconsistente (URL cambiada sin contenido).
+    // ----------------------------------------------------------------------
+    if (!renderOk) return;
 
     // ----------------------------------------------------------------------
     // ACTUALIZAR URL
@@ -244,6 +247,10 @@ window.Router = (function () {
 
   // --------------------------------------------------------------------------
   // BACK/FORWARD NAVIGATION
+  // popstate NO toca _activeSection: ese estado vive en main.js y se sincroniza
+  // de forma centralizada vía el evento 'sectionChanged' (que render() dispara
+  // en todos los caminos, incluido este). Así no hay estado duplicado ni
+  // doble-disparo entre router.js y main.js.
   // --------------------------------------------------------------------------
   window.addEventListener("popstate", (e) => {
     const key = e.state?.key;
@@ -259,11 +266,12 @@ window.Router = (function () {
   // --------------------------------------------------------------------------
   // API PÚBLICA
   // --------------------------------------------------------------------------
-  return {
-    init,
-    navigate,
-    render,
-    isEnabled
-  };
+return {
+     init,
+     navigate,
+     render,
+     isEnabled,
+     getFirstEnabled
+   };
 
 })();

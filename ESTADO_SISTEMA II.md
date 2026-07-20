@@ -162,7 +162,7 @@ El core (`layout.js`, `helpers.js`, `cta.js`, `social.js`, los renderers) se com
       "id": "",           // presente → entidad (nunca se pisa); ausente → referencia pura
       "source": "",       // nombre del catálogo externo (ej: "services", "paraderos")
       "targets": [],      // ids a resolver — 1 elemento = referencia simple, 2+ = colección
-      "query": "",        // [PENDIENTE, no implementado] catálogo donde buscar referencias inversas
+      "query": "",        // [PENDIENTE DE CONSUMO] catálogo donde buscar referencias inversas
       "title": "",
       "summary": "",
       "description": "",
@@ -184,7 +184,7 @@ El core (`layout.js`, `helpers.js`, `cta.js`, `social.js`, los renderers) se com
   - **Sin `id` propio** → referencia pura. El item se reemplaza por completo con el item externo (`source + targets[0]`). Comportamiento equivalente al contrato v1, solo que ahora lee `targets[0]` en vez de `target`.
   - **Con `id` propio** → entidad. Nunca se pisa; conserva `title`/`summary`/etc. propios. Si además trae `source + targets`, esa combinación describe su colección de hijos, resuelta en un campo de salida `_children` (no se declara en el JSON de autor — lo produce el resolver).
   - La resolución es **recursiva**: un item externo traído por una referencia pura puede él mismo ser una colección (tiene su propio `id + source + targets`) — se detecta después del merge, no antes. Caso real: `passenger.json` referencia `rutas.json` (referencia pura, sin `id`); la ruta resuelta trae su propia colección de paraderos.
-- **`query` está reservado en el contrato pero NO implementado en el resolver.** Documentado para que quede declarado antes de programarse. Ver sección 13.3 para el diseño previsto.
+- **`query` ya corre dentro de `resolveItems()` mediante `_resolveQuery()`.** Resuelve búsquedas inversas en cada visita a secciones que consumen referencias, como Rutas/Pasajeros. El pendiente real no es el resolver sino el consumo útil en UI: falta definir qué ocurre cuando la persona elige una ruta desde un paradero. Ver secciones 8.9, 8.10 y 13.3.
 - **Existencia condicional:** ningún campo opcional vacío genera HTML. No hay placeholders ni contenido por defecto — confirmado en los renderers estables.
 - **Cadena de resolución de valores (layout):** valor del módulo JSON → `default_X` de `config_web.json` (`layouts.default_*`) → valor hardcodeado en `layout.js`.
 
@@ -282,11 +282,13 @@ renderer(data, config, control) → string HTML interno (sin <section>)
 
 ### 5.3 cta.js — Resolver de CTA
 
-**Bug 8.1 resuelto en este corte.** `cta.js` separa `resolveCTALink(cta)` (lógica pura, sin HTML) de `buildCTA(cta)` (presentación). Ninguna de las dos recibe `config`:
+**Bug 8.1 resuelto en este corte.** `cta.js` separa `resolveCTALink(cta)` (lógica de destino, sin HTML) de `buildCTA(cta)` (presentación). Ninguna de las dos recibe `config` como parámetro, pero `source: "social"` depende indirectamente de `window.getConfig()` vía `resolveSocialChannel()`:
 
 - `source: "url"` → recurso externo explícito. Reemplaza el heurístico previo `target.startsWith('http')` — ahora también cubre PDFs e imágenes servidas como recurso relativo, no solo URLs que empiecen con `http`.
 - `source: "social"` → delega en `resolveSocialChannel()`, el mismo mecanismo que usa el dock. WhatsApp ya no depende de `social.json.item.url` (campo inexistente, causa raíz del bug) — se arma desde `config.business.whatsapp`.
 - Cualquier otro `source` → navegación interna SPA (`href="#{source}"`, `data-section`, `data-service` opcional) — sin cambios de comportamiento respecto a la versión anterior.
+
+**Pendiente nuevo:** la rama de navegación interna no valida que `source` exista en `config_web.json → navigation` ni que esté `show: true`. Un typo o una sección deshabilitada puede generar un CTA visualmente válido que luego cae en la redirección silenciosa del router. Ver plan consolidado, punto 3.
 
 ### 5.4 social.js — Dock flotante
 
@@ -471,9 +473,13 @@ Toda la resolución real de fondo ocurre por cascada pura en CSS (`--section-bg-
 
 **`[SIN DEFINIR]`** Se discutió la posibilidad de que, al hacer click en un elemento de `.item-stops` (ej. un paradero dentro de una ruta), el detalle visible de la entidad padre cambie para mostrar los datos de ese hijo. No se definió el mecanismo de interacción (panel fijo vs. expansión in-place, reemplazo vs. convivencia) ni se implementó nada. Queda abierto explícitamente — no debe inventarse comportamiento sin esta definición previa.
 
-### 8.10 query (búsqueda inversa) — reservado en contrato, no implementado
+### 8.10 query (búsqueda inversa) — resuelto por helper, sin consumo visual
 
-**`[RESERVADO, no implementado]`** Ver 4.2 y 13.3. `model.json` ya documenta el campo; `resolveItems()` no lo resuelve todavía.
+**`[IMPLEMENTADO EN RESOLVER, pendiente de consumo]`** `_resolveQuery()` existe en `helpers.js` y se ejecuta desde `resolveItems()` cuando un item declara `id + query`. En `paraderos.json`, cada paradero declara `query: "rutas"`; al cargarse, el helper busca en `rutas.json` qué rutas traen ese id en sus `targets` y anexa el resultado como `_children`.
+
+Caso real verificado: `p01` resuelve las tres rutas esperadas (`MAPE-CT`, `MAPE-VVD`, `MAPE-ALB`).
+
+El problema real es que ese `_children` todavía no está listo para uso final: aunque algunos renderers y `buildCTAList()` pueden pintar colecciones, falta la pieza de UI del punto 8.9 para el caso concreto "este paradero pertenece a estas N rutas, elige una". No se debe marcar como listo para ejecutar hasta resolver esa interacción.
 
 ### 8.11 Resumen tabular
 
@@ -488,7 +494,83 @@ Toda la resolución real de fondo ocurre por cascada pura en CSS (`--section-bg-
 | Firma `renderer(data, config, control)` | 🟡 Candidato a simplificar | `config` confirmado sin uso en los 3 renderers estables |
 | CSS de `.item-stops` | 🟡 Pendiente | Sin estilo definido — ver 8.8 |
 | Interacción de selección de hijo de colección | ⚪ Sin definir | Ver 8.9 — requiere decisión de UX antes de programar |
-| `query` (búsqueda inversa) | ⚪ Reservado, no implementado | Ver 13.3 |
+| `query` (búsqueda inversa) | 🟡 Implementado en helper, bloqueado por UX | `_resolveQuery()` corre desde `resolveItems()`; falta definir 8.9 antes de consumirlo |
+
+### 8.12 Plan de Refactorización — consolidado (`index.html`, `main.js`, `router.js`, `helpers.js`, `cta.js`)
+
+Reemplaza los checkpoints parciales anteriores. Pendiente de auditar en otro corte: `layout.js`, `social.js`, los renderers, `layout.css` y `main.css`.
+
+#### Crítico
+
+**1. Sin `try/catch` en `fetch('/config_web.json')`.** Un fallo de carga deja la app en blanco sin error visible.
+
+**2. Botón atrás/adelante rompe el menú.** `popstate` en `router.js` nunca actualiza `_activeSection`; incluye el doble disparo de `construirMenu()`, porque toca el mismo estado compartido.
+
+**3. CTA interna sin validar `source`.** Cualquier `source` distinto de `url` o `social` se trata como sección interna, sin comprobar que exista en `config_web.json → navigation` ni que esté `show: true`.
+
+#### Importante
+
+**4. CSS de layout con responsabilidad duplicada.** Comentario falso en `router.js`, `<link>` de `layout.js` sin `id`, y limpieza que no alcanza esos links: una causa con tres síntomas.
+
+**5. Doble fetch del mismo JSON en cada navegación.** `router.js` lee el JSON para extraer `.layout`; luego el módulo vuelve a pedirlo completo.
+
+**6. Render fallido dispara efectos de render exitoso.** Actualmente puede cambiar la URL y actualizar el dock aunque el módulo falle.
+
+**7. Logo del nav sin manejo de error de carga.**
+
+#### Limpieza y consistencia
+
+**8. Reimplementación repetida de "valor o fallback".** Instancias confirmadas: `resolveContentWidth`, `resolveSectionWidth`, `obtenerValorConfig` y fallback interno de `buildCTAList`.
+
+**9. Funciones completas sin uso real o con uso inconsistente.** `dataBusiness()` no tiene llamador. `buildMembersList()` ya no está muerto en esta copia del repo porque `accordion.js` lo llama, pero sigue siendo inconsistente con `blocks.js`/`fullscreen.js` que usan `buildCTAList()`, y emite `.accordion-members` sin CSS asociado.
+
+**10. Campos/config declarados sin uso real.** `whatsapp_icon` y `app.hero_image`.
+
+**11. `getConfig()` sin protección de orden.** Hoy funciona porque el boot carga config antes de CTAs/dock, pero los consumidores reales (`social.js` y CTAs de WhatsApp) dependen de ese orden.
+
+**12. `keydown` handler espera `role="button"`, pero ningún renderer lo emite.**
+
+**13. `sessionStorage.setItem('pendingServiceId')` se escribe y no se lee.**
+
+**14. Dock se actualiza dos veces por navegación.**
+
+**15. `query` — corrección de estado, con destino confirmado.** 8.10 no es "no implementado" ni tampoco "listo para usar". `_resolveQuery()` corre en cada carga de un paradero con `query: "rutas"`, busca en `rutas.json` qué rutas traen ese id en sus `targets`, y guarda el resultado en `_children`. Falta la parte de UI ligada al punto 8.9: qué ocurre cuando alguien elige una ruta desde un paradero.
+
+**16. `cargarFuentes()` con preconnect incompleto y sin protección de doble ejecución.**
+
+**17. `isEnabled` tiene dos niveles de estrictez.** `Router` exige `show === true`, mientras el arranque de `main.js` usa lectura truthy.
+
+**18. Tercer cargador de scripts.** `loadModule()` en `router.js` no reutiliza `loadScript`/`loadJS` e inyecta scripts en `body` en vez de `head`.
+
+**19. `setup.before` está documentado en el header de `router.js`, pero ningún módulo lo implementa.**
+
+**20. `navigate()` es un alias vacío de `render()`.**
+
+**21. `resolveAssetUrl()` no se usa en renderers para `icon`/`image`.**
+
+**22. `resolveSectionAppearance()` corre siempre aunque ningún JSON declare `appearance`.**
+
+**23. `social.json` contiene placeholders literales en Facebook/Instagram.**
+
+#### Documentación a corregir
+
+**24. Header de `helpers.js` desactualizado.** Dice exponer 7 funciones, pero el archivo expone más.
+
+**25. `.md` 8.7 desactualizado.** Ya quedó resuelto en código real.
+
+**26. `.md` 8.10 corregido en este corte.** `query` corre y resuelve bien; falta consumidor de UI, bloqueado por 8.9.
+
+#### Diferido
+
+**27. `contact.js` / `location.js` sin `window.load`.**
+
+#### Recordatorio de producto
+
+**28. Confirmar `client`, `legal_name` y `tax_id`.**
+
+#### Futuro condicional
+
+**29. Evaluar carga bajo demanda de `helpers`/`cta`/`layout`/`social`.**
 
 ---
 
@@ -602,12 +684,14 @@ El core (`helpers.js` con `resolveItems()` v2 incluido) se comparte entre proyec
 - Comando sugerido para localizar candidatos: `grep -rln '"target"[[:space:]]*:' --include="*.json" <carpeta-de-datos>` — revisar a mano cuáles son `items[].target` (migrar) vs. `cta`/`floating`/`media` (dejar igual).
 - Se decidió explícitamente **no** mantener compatibilidad con el formato viejo (sin fallback `target`→`targets` en el resolver), para no sostener dos contratos válidos en simultáneo y reducir superficie de error.
 
-### 13.3 query — diseño reservado, no implementado
+### 13.3 query — búsqueda inversa resuelta por helper, pendiente de consumo
 
 Concepto: un item con `id` puede declarar `"query": "<nombre-de-catálogo>"` para que el resolver busque, en sentido inverso, qué entidades de ese catálogo tienen a este item dentro de su propio `targets`. No se guarda la relación en ambos lados — se calcula al consultar.
 
 Caso de uso motivador: un paradero puede pertenecer a varias rutas (ej. `p07` en `map-centro` y `jm-centro`). Un QR en la calle solo puede identificar el paradero, no la ruta — la búsqueda inversa permite, al escanear, mostrar todas las rutas que pasan por ahí y dejar que la persona elija, o navegar directo si solo hay una.
 
-**No implementado en `resolveItems()` a la fecha de este corte.** Documentado en `model.json` como contrato reservado para evitar que se use antes de tener resolver real, y para no perder el diseño acordado entre sesiones de trabajo.
+**Estado real del corte actual:** `_resolveQuery()` ya está implementado en `helpers.js` y se invoca desde `resolveItems()` cuando el item tiene `id + query`. En `paraderos.json`, cada paradero declara `query: "rutas"`; al cargarse, el helper busca en `rutas.json` qué rutas referencian ese paradero dentro de `targets` y las anexa como `_children`. Caso confirmado: `p01` encuentra `MAPE-CT`, `MAPE-VVD` y `MAPE-ALB`.
+
+**Pendiente real:** la búsqueda inversa está resuelta a nivel de datos, pero no está lista como funcionalidad de UI. Falta definir el punto 8.9: cómo se presenta la lista de rutas de un paradero y qué ocurre al elegir una.
 
 ---

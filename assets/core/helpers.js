@@ -1,8 +1,12 @@
 // ==========================================================================
 // helpers.js — Utilidades globales del sistema
-// Expone: window.cargarJSON | window.escapeHTML | window.capitalize |
-//         window.resolveItems | window.resolveSocialChannel |
-//         window.renderBase | window.dataBusiness
+// Expone (16): window.cargarJSON | window.escapeHTML | window.formatText |
+//         window.resolveAssetUrl | window.capitalize |
+//         window.resolveSectionAppearance | window.resolveSectionWidth |
+//         window.resolveSectionStyle | window.resolveSectionBackground |
+//         window.mergeStyleAttrs | window.inspectLayoutState |
+//         window.debugLayoutState | window.resolveItems |
+//         window.resolveSocialChannel | window.renderBase | window.dataBusiness
 // ==========================================================================
 
 ;(function() {
@@ -95,6 +99,9 @@ window.capitalize = function(str) {
 // ==========================================================================
 
 window.resolveSectionAppearance = function(data = {}, config = {}) {
+  if (!data?.appearance && !config?.appearance) {
+    return {};
+  }
   return {
     ...(config?.appearance || {}),
     ...(data?.appearance || {})

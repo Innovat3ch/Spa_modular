@@ -8,7 +8,7 @@
    VARIABLES — Solo las que se sobreescriben del sistema
    ========================================================================== */
 .page-section {
-  --module-content-width: 78%;
+  --module-content-width: 84%;
   --dark-mode: 0;
   --content-top-gap: 0.3rem;
   --content-top-gap-mobile: 0.5rem;
@@ -90,31 +90,13 @@
 #passenger .blocks-grid {
   max-width: 100%;
 }
+/* ==========================================================================
+    CTA
+    ========================================================================== */
 
 /* ==========================================================================
-   CTA
-   ========================================================================== */
-.page-section .btn-nicepage {
-  padding: 0.9rem 2rem;
-  font-family: var(--font-family);
-  font-weight: 700;
-  font-size: 1rem;
-  text-transform: uppercase;
-  letter-spacing: var(--tracking-wide);
-  border-radius: 4px;
-  transition: transform 0.2s ease, filter 0.2s ease;
-  display: inline-block;
-  margin-top: 0.5rem;
-}
-
-.page-section .btn-nicepage:hover {
-  transform: translateY(-2px);
-  filter: brightness(1.1);
-}
-
-/* ==========================================================================
-   RESPONSIVE
-   ========================================================================== */
+    RESPONSIVE
+    ========================================================================== */
 @media (max-width: 768px) {
   .page-section {
     --module-content-width: 100%;

@@ -106,7 +106,8 @@
 
 .page-section .block-features,
 .page-section .accordion-features,
-.page-section .fs-item-features {
+.page-section .fs-item-features,
+.page-section .member-list {
   font-size: var(--type-item-list-size);
   line-height: var(--type-item-list-line);
 }
@@ -136,18 +137,29 @@
 }
 
 /* ==========================================================================
-   CTA BASE
+   CTA BASE — SIEMPRE CENTRADO
    .btn-nicepage es la clase que cta.js genera para cualquier enlace
    reutilizado por layouts, así que su caja visual vive aquí.
+   
+   CAMBIO: Reemplazado align-self: flex-start; con margin: auto;
+   
+   Contextos donde aparece (TODOS CENTRADOS):
+   1. CTA Global (renderBase) — hero, about, passenger
+   2. CTA de Items — dentro de blocks, accordion, fullscreen
+   3. CTA en Member Lists — dentro de .item-stops
+   
+   Razón: El botón CTA debe ser un punto focal visual independiente.
+   Centrado proporciona un efecto más estático y atrae la atención.
    ========================================================================== */
 .btn-nicepage {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  align-self: flex-start;
+  margin-left: auto;
+  margin-right: auto;
   min-height: 42px;
   padding: 0 1.1rem;
-  border-radius: 8px;
+  border-radius: 24px;
   background: var(--accent);
   color: var(--text-light);
   text-decoration: none;
@@ -156,11 +168,65 @@
   text-transform: uppercase;
   letter-spacing: var(--tracking-wide, 0.04em);
   white-space: nowrap;
-  transition: filter 0.2s ease;
+  box-shadow: 0 4px 14px color-mix(in srgb, var(--accent) 45%, transparent);
+  transition: filter 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+  cursor: pointer;
+  border: none;
 }
 
 .btn-nicepage:hover {
   filter: brightness(0.92);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px color-mix(in srgb, var(--accent) 55%, transparent);
+}
+
+.btn-nicepage:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.btn-nicepage:active {
+  transform: scale(0.98);
+}
+
+/* ==========================================================================
+   MEMBER LIST
+   Lista comun para colecciones (_children): enlaces simples, no botones.
+   ========================================================================== */
+.member-list {
+  display: grid;
+  gap: 0.35rem;
+  margin: 0;
+  padding-left: 0;
+  list-style: none;
+  color: var(--layout-text);
+}
+
+.member-list li {
+  position: relative;
+  padding-left: 1.4rem;
+}
+
+.member-list li::before {
+  content: '→';
+  position: absolute;
+  left: 0;
+  color: var(--accent);
+  font-weight: 700;
+}
+
+.member-list a {
+  color: inherit;
+  text-decoration: none;
+  border-bottom: 1px solid color-mix(in srgb, var(--accent) 35%, transparent);
+  transition: color 0.2s ease, border-color 0.2s ease;
+}
+
+.member-list a:hover,
+.member-list a.active,
+.member-list a[aria-current="page"] {
+  color: var(--accent);
+  border-bottom-color: currentColor;
 }
 
 /* --- ALIGN: posicion horizontal del bloque + alineacion del texto --- */

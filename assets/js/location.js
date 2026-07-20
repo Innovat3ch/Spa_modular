@@ -45,11 +45,11 @@ function _renderMediaViewer(loc, config) {
 
   const mapaUrl     = _buildMapaUrl(loc, config.business || {});
   const imgSrc      = window.resolveAssetUrl
-    ? window.resolveAssetUrl(media.photo || app.office_image || app.background_image || app.hero_image || app.logo_path || '')
-    : (media.photo || app.office_image || app.background_image || app.hero_image || app.logo_path || '');
+    ? window.resolveAssetUrl(media.photo || app.office_image || app.background_image || app.logo_path || '')
+    : (media.photo || app.office_image || app.background_image || app.logo_path || '');
   const imgFallback = window.resolveAssetUrl
-    ? window.resolveAssetUrl(app.office_image || app.background_image || app.hero_image || app.logo_path || '')
-    : (app.office_image || app.background_image || app.hero_image || app.logo_path || '');
+    ? window.resolveAssetUrl(app.office_image || app.background_image || app.logo_path || '')
+    : (app.office_image || app.background_image || app.logo_path || '');
 
   const tieneFoto  = media.show_photo && imgSrc;
   const tieneMapa  = media.show_map && mapaUrl;

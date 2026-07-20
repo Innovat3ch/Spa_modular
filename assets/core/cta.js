@@ -18,8 +18,20 @@
 //                                              target = id opcional dentro de esa sección
 //
 // No recibe config como parámetro: resolveSocialChannel() ya lo lee de
-// window.getConfig() (helpers.js). buildCTA() queda como pura presentación.
+// window.getConfig() (helpers.js). buildCTA() queda como pura presentación
+// salvo la validación de navegación interna, que sí consulta getConfig() para
+// descartar typos o secciones deshabilitadas (sin esto, el botón parece válido
+// pero redirige en silencio a la primera sección habilitada).
 // ==========================================================================
+
+// Valida que el source de navegación interna exista en navigation y esté
+// show:true. Devuelve true solo si la sección es válida y navegable.
+function _isInternalSectionEnabled(source) {
+  const nav = window.getConfig?.()?.navigation;
+  if (!nav || !source) return false;
+  const entry = nav[source];
+  return entry?.show === true;
+}
 
 window.resolveCTALink = async function(cta) {
   if (!cta?.label || !cta?.source) return null;
@@ -43,7 +55,14 @@ window.resolveCTALink = async function(cta) {
 
   // --------------------------------------------------
   // Navegación interna SPA — source = sección, target = id opcional
+  // VALIDACIÓN ESTRICTA: el source debe existir en navigation y estar
+  // show:true. Un typo o una sección deshabilitada NO genera botón.
   // --------------------------------------------------
+  if (!_isInternalSectionEnabled(cta.source)) {
+    console.warn(`[CTA] source de navegación interna inválido o deshabilitado: "${cta.source}"`);
+    return null;
+  }
+
   return {
     href: `#${cta.source}`,
     section: cta.source,
@@ -129,5 +148,5 @@ window.buildMembersList = async function(items = [], options = {}) {
     return `<li><a href="${href}" ${dataAttrs}>${label}</a></li>`;
   }));
 
-  return `<ul class="accordion-members item-content">${lis.filter(Boolean).join('')}</ul>`;
+  return `<ul class="member-list item-content">${lis.filter(Boolean).join('')}</ul>`;
 };

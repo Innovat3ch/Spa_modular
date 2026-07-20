@@ -19,11 +19,11 @@ window.renderAccordion = async function(data, control) {
       const isReference = item._source && Array.isArray(item._targets) && item._targets.length;
       const hasCTA = item.cta && item.cta.label && item.cta.source;
 
-      const iconHtml = item.icon ? `
-        <span class="accordion-icon">
-          <img src="${window.escapeHTML(item.icon)}" alt="" loading="lazy">
-        </span>
-      ` : '';
+const iconHtml = item.icon ? `
+         <span class="accordion-icon">
+           <img src="${window.escapeHTML(window.resolveAssetUrl(item.icon))}" alt="" loading="lazy">
+         </span>
+       ` : '';
 
       const summaryHtml = item.summary
         ? `<p class="accordion-summary item-header">${window.formatText(item.summary)}</p>`
@@ -50,45 +50,23 @@ window.renderAccordion = async function(data, control) {
         ? `<ul class="accordion-features item-content">${item.features.map(f => `<li>${window.escapeHTML(f)}</li>`).join('')}</ul>`
         : '';
 
-      const mediaHtml = item.image ? `
-        <figure class="accordion-media">
-          <img src="${window.escapeHTML(item.image)}" alt="${window.escapeHTML(item.title || '')}" loading="lazy">
-        </figure>
-      ` : '';
+const mediaHtml = item.image ? `
+         <figure class="accordion-media">
+           <img src="${window.escapeHTML(window.resolveAssetUrl(item.image))}" alt="${window.escapeHTML(item.title || '')}" loading="lazy">
+         </figure>
+       ` : '';
 
-      const cta = hasCTA ? await window.buildCTA(item.cta) : '';
       const bodyClass = mediaHtml ? 'accordion-body has-media' : 'accordion-body';
 
+      // Footer: lista de hipervínculos si hay colección (_children),
+      // botón CTA si es una acción simple. Nunca ambos, y siempre
+      // full-width debajo de features — no compite en columnas con nada.
       const hasChildren = (item._children || []).length;
-      const childrenHtml = hasChildren
-        ? `<div class="item-stops">
-            ${await window.buildCTAList(item._children, {
-              section: data?.members_source || data?.id || 'passenger'
-            })}
-          </div>`
-        : '';
-      const footerHtml = hasChildren ? childrenHtml : cta;
-      const contentColumns = [];
-
-      if (features) {
-        contentColumns.push(`
-          <div class="accordion-content-column accordion-content-column--features">
-            ${features}
-          </div>
-        `);
-      }
-
-      if (footerHtml) {
-        contentColumns.push(`
-          <div class="accordion-content-column accordion-content-column--members">
-            ${footerHtml}
-          </div>
-        `);
-      }
-
-      const contentGridHtml = contentColumns.length
-        ? `<div class="accordion-content-grid">${contentColumns.join('')}</div>`
-        : '';
+      const footerHtml = hasChildren
+        ? await window.buildMembersList(item._children, {
+            section: data?.members_source || data?.id || 'passenger'
+          })
+        : (hasCTA ? await window.buildCTA(item.cta) : '');
 
       return `
         <details class="accordion-item" data-id="${window.escapeHTML(item.id || '')}">
@@ -103,7 +81,8 @@ window.renderAccordion = async function(data, control) {
           <div class="${bodyClass}">
             <div class="accordion-content-text">
               ${item.description ? `<p class="accordion-description item-content">${window.formatText(item.description)}</p>` : ''}
-              ${contentGridHtml}
+              ${features}
+              ${footerHtml}
             </div>
             ${mediaHtml}
           </div>

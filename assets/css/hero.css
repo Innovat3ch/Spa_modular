@@ -136,30 +136,8 @@
 }
 
 /* ==========================================================================
-   CTA PRINCIPAL
-   ========================================================================== */
-
-.page-section .btn-nicepage {
-  padding: 0.9rem 2rem;
-  font-family: var(--font-family);
-  font-weight: 700;
-  font-size: 1rem;
-  text-transform: uppercase;
-  letter-spacing: var(--tracking-wide);
-  border-radius: 4px;
-  transition: transform 0.2s ease, filter 0.2s ease;
-  display: inline-block;
-  margin-top: 0.5rem;
-}
-
-.page-section .btn-nicepage:hover {
-  transform: translateY(-2px);
-  filter: brightness(1.1);
-}
-
-/* ==========================================================================
-   OVERRIDE DE ALINEACIÓN — Items centrados en hero
-   ========================================================================== */
+    OVERRIDE DE ALINEACIÓN — Items centrados en hero
+    ========================================================================== */
 
 #hero .block-summary {
   text-align: center !important;

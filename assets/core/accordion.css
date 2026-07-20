@@ -131,14 +131,21 @@
 
 /* ==========================================================================
    BODY
+   Sin media (has-media ausente): una sola columna — el texto ocupa
+   todo el ancho disponible, sin hueco reservado para media inexistente.
+   Con media (has-media presente): grid de dos columnas, texto + imagen.
    ========================================================================== */
 .accordion-body {
   display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  flex: 1 1 auto;
+  padding: 0.4rem 1.25rem 1.25rem calc(1.25rem + 42px + 1rem);
+}
+
+.accordion-body.has-media {
   grid-template-columns: minmax(0, 1fr) minmax(260px, 32%);
   gap: 2rem;
   align-items: start;
-  flex: 1 1 auto;
-  padding: 0.4rem 1.25rem 1.25rem calc(1.25rem + 42px + 1rem);
 }
 
 .accordion-media {
@@ -247,6 +254,10 @@
     padding: 0.75rem 1rem 1.25rem;
   }
 
+  .accordion-body.has-media {
+    grid-template-columns: 1fr;
+  }
+
   .accordion-media {
     width: 100%;
     min-height: 200px;
@@ -266,12 +277,87 @@
   .accordion-title,
   .accordion-summary,
   .accordion-description,
-  .accordion-features {
-    text-align: left !important;
-  }
-
-
-
+.accordion-features {
+     text-align: left !important;
+}
+ 
+/* ==========================================================================
+   LISTA DE MIEMBROS (usada en acordeón para sub-items como paraderos)
+   ========================================================================== */
+.accordion-members {
+  list-style: none;
+  padding: 0;
+  margin: 1rem 0 0;
 }
 
+.accordion-members li {
+  margin-bottom: 0.75rem;
+}
 
+.accordion-members a {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem 1.25rem;
+  background: var(--layout-bg);
+  border: 1px solid var(--layout-border);
+  border-radius: 6px;
+  color: var(--layout-text);
+  text-decoration: none;
+  font-size: 0.875rem;
+  transition: all 0.2s ease;
+}
+
+.accordion-members a:hover {
+  background: var(--layout-icon-bg);
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+/* Opcional: estilo para estado activo si se necesita */
+.accordion-members a.active,
+.accordion-members a[aria-current="page"] {
+  background: var(--accent);
+  color: var(--text-light);
+}
+}
+
+/* ==========================================================================
+   LISTA DE MIEMBROS (usada en acordeón para sub-items como paraderos)
+   ========================================================================== */
+.accordion-members {
+  list-style: none;
+  padding: 0;
+  margin: 1rem 0 0;
+}
+
+.accordion-members li {
+  margin-bottom: 0.75rem;
+}
+
+.accordion-members a {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem 1.25rem;
+  background: var(--layout-bg);
+  border: 1px solid var(--layout-border);
+  border-radius: 6px;
+  color: var(--layout-text);
+  text-decoration: none;
+  font-size: 0.875rem;
+  transition: all 0.2s ease;
+}
+
+.accordion-members a:hover {
+  background: var(--layout-icon-bg);
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+/* Opcional: estilo para estado activo si se necesita */
+.accordion-members a.active,
+.accordion-members a[aria-current="page"] {
+  background: var(--accent);
+  color: var(--text-light);
+}
