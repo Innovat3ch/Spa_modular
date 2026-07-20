@@ -1,6 +1,0 @@
-{
-    "workbench.commandPalette.showAskInChat": false,
-    "chat.agent.enabled": false,
-    "chat.byokUtilityModelDefault": "mainAgent",
-    "chat.agent.sandbox.enabled": "on"
-}
