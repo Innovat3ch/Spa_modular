@@ -14,8 +14,7 @@ const DEFAULT_CONFIG = {
     font_family: 'Bebas Neue',
     font_secondary: 'DM Sans',
     logo_path: '/assets/images/logo.png',
-    favicon_path: '/assets/images/logo.png',
-    whatsapp_icon: '/assets/images/whatsapp.svg'
+    favicon_path: '/assets/images/logo.png'
   },
   business: {
     brand_name: 'Presencia Digital',
@@ -40,7 +39,7 @@ let _pendingServiceId = null;
 // paso explícito.
 // ==========================================================================
 
-window.getConfig = function () {
+window.getConfig = function() {
   return _config;
 };
 
@@ -57,7 +56,7 @@ function obtenerValorConfig(real, fallback) {
 // SCRIPT LOADER — unificado para cargar cores y módulos bajo demanda
 // ==========================================================================
 
-window.loadScript = function (src) {
+window.loadScript = function(src) {
   return new Promise((resolve, reject) => {
     const normalizedSrc = window.resolveAssetUrl ? window.resolveAssetUrl(src) : src;
     const existing = document.querySelector(`script[src="${normalizedSrc}"]`);
@@ -73,7 +72,7 @@ window.loadScript = function (src) {
   });
 };
 
-window.loadModuleScript = function (key) {
+window.loadModuleScript = function(key) {
   return window.loadScript(`/assets/js/${key}.js`);
 };
 
@@ -82,6 +81,11 @@ window.loadModuleScript = function (key) {
 // ==========================================================================
 
 function cargarFuentes(config) {
+  // Guarda de doble ejecución: DOMContentLoaded no debería disparar dos
+  // veces, pero por si el módulo se recarga o se llama en otro lado.
+  if (cargarFuentes._done) return;
+  cargarFuentes._done = true;
+
   const app = {
     ...DEFAULT_CONFIG.appearance,
     ...(config.appearance || {})
@@ -98,10 +102,14 @@ function cargarFuentes(config) {
     .map(f => `family=${encodeURIComponent(f)}:wght@300;400;500;700`)
     .join('&');
 
-  const preconnect = document.createElement('link');
-  preconnect.rel = 'preconnect';
-  preconnect.href = 'https://fonts.googleapis.com';
-  document.head.appendChild(preconnect);
+  // Preconnect completo: el CSS de Google y el host de las fuentes (gstatic).
+  ['https://fonts.googleapis.com', 'https://fonts.gstatic.com'].forEach(href => {
+    const preconnect = document.createElement('link');
+    preconnect.rel = 'preconnect';
+    preconnect.href = href;
+    preconnect.crossOrigin = 'anonymous';
+    document.head.appendChild(preconnect);
+  });
 
   const link = document.createElement('link');
   link.rel = 'stylesheet';
@@ -137,7 +145,7 @@ function aplicarVariablesCSS(config) {
   // ==========================================================================
   // FONDOS GLOBALES — Disponibles para que layout.css o los módulos los usen
   // ==========================================================================
-
+  
   const bgImage = app.background_image;
   const bgMobile = app.background_mobile;
 
@@ -169,10 +177,16 @@ function configurarBranding(config) {
 
   const logo = document.getElementById('nav-logo-img');
   if (logo) {
-    logo.src = window.resolveAssetUrl
+    const logoPath = window.resolveAssetUrl
       ? window.resolveAssetUrl(app.logo_path || DEFAULT_CONFIG.appearance.logo_path)
       : (app.logo_path || DEFAULT_CONFIG.appearance.logo_path);
     logo.alt = biz.brand_name;
+    // Si la imagen falla, ocultamos el <img> y dejamos visible el texto de marca.
+    logo.onerror = () => {
+      logo.style.display = 'none';
+      logo.onerror = null;
+    };
+    logo.src = logoPath;
     logo.style.display = 'block';
   }
 
@@ -209,6 +223,16 @@ function construirMenu() {
     });
     container.appendChild(a);
   }
+
+  resaltarSeccionActiva(_activeSection);
+}
+
+function resaltarSeccionActiva(key) {
+  const container = document.getElementById('menu-dinamico');
+  if (!container) return;
+  container.querySelectorAll('a[data-section]').forEach(link => {
+    link.classList.toggle('active', link.dataset.section === key);
+  });
 }
 
 function closeNavMenu() {
@@ -340,7 +364,7 @@ function configurarNavToggle() {
 // MEDIA RESOLVER
 // ==========================================================================
 
-window.resolverMedia = async function (media, config) {
+window.resolverMedia = async function(media, config) {
   const source = media?.source;
   const target = media?.target;
 
@@ -425,6 +449,7 @@ function abrirServicioPendiente() {
   if (!_pendingServiceId) return;
   window.openItem?.(_pendingServiceId);
   _pendingServiceId = null;
+  sessionStorage.removeItem('pendingServiceId');
 }
 
 // ==========================================================================
@@ -456,9 +481,22 @@ async function preloadLayoutSystem() {
 
 document.addEventListener('DOMContentLoaded', async () => {
   await preloadLayoutSystem();
-  const res = await fetch('/config_web.json');
-  _config = await res.json();
 
+  let _configRaw = null;
+  try {
+    const res = await fetch('/config_web.json');
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    _configRaw = await res.json();
+  } catch (err) {
+    console.error('[main] No se pudo cargar config_web.json', err);
+    const app = document.getElementById('app');
+    if (app) {
+      app.innerHTML = '<div class="section-loading">Error cargando la configuración del sitio.</div>';
+    }
+    return;
+  }
+
+  _config = _configRaw;
   _nav = _config.navigation || {};
 
   cargarFuentes(_config);
@@ -470,32 +508,33 @@ document.addEventListener('DOMContentLoaded', async () => {
   configurarAccordionExclusive();
 
   document.addEventListener('sectionChanged', async (e) => {
-    const { data } = e.detail;
+    const { key, data } = e.detail;
+    // Sincroniza _activeSection en TODOS los caminos de navegación
+    // (clic en menú, CTA interna Y botón atrás/adelante → popstate).
+    _activeSection = (key === Router.getFirstEnabled()) ? null : key;
+    resaltarSeccionActiva(key);
     await window.actualizarDock(data?.floating);
     abrirServicioPendiente();
   });
 
-  document.addEventListener('click', async (e) => {
-    const el = e.target.closest('[data-section]');
-    if (!el) return;
-    e.preventDefault();
-    const section = el.dataset.section;
-    const serviceId = el.dataset.service || null;
-    await cargarSeccion(section, serviceId);
-    abrirServicioPendiente();
-  });
+document.addEventListener('click', async (e) => {
+  const el = e.target.closest('[data-section]');
+  if (!el) return;
+  e.preventDefault();
+  const section = el.dataset.section;
+  const serviceId = el.dataset.service || null;
+  await cargarSeccion(section, serviceId);
+  abrirServicioPendiente();
+});
 
-  document.addEventListener('keydown', (e) => {
-    if (e.key !== 'Enter' && e.key !== ' ') return;
-    const el = e.target.closest('[data-section][role="button"]');
-    if (!el) return;
-    e.preventDefault();
-    el.click();
-  });
+const hash = window.location.hash.replace('#', '');
+  const pendingFromStorage = sessionStorage.getItem('pendingServiceId');
 
-  const hash = window.location.hash.replace('#', '');
   if (hash && _nav[hash]?.show) {
     cargarSeccion(hash);
+  } else if (pendingFromStorage) {
+    _pendingServiceId = pendingFromStorage;
+    cargarSeccion('hero', pendingFromStorage);
   } else {
     cargarSeccion('hero');
   }
